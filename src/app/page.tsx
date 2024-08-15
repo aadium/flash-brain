@@ -1,45 +1,37 @@
 "use client";
-import {signOut, useSession} from "next-auth/react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
+import {useEffect} from "react";
 
 export default function Home() {
-    const {status} = useSession();
     const router = useRouter();
 
-    const showSession = () => {
-        if (status === "authenticated") {
-            return (
-                <button
-                    className="border border-solid border-gray-700 rounded text-white bg-gray-800 py-1 px-3 transition duration-150 ease hover:bg-gray-700"
-                    onClick={() => {
-                        signOut({redirect: false}).then(() => {
-                            router.push("/");
-                        });
-                    }}
-                >
-                    Sign Out
-                </button>
-            )
-        } else if (status === "loading") {
-            return (
-                <span className="text-gray-400 text-sm mt-7">Loading...</span>
-            )
-        } else {
-            return (
-                <Link
-                    href="/login"
-                    className="border border-solid border-gray-700 rounded text-white bg-gray-800 py-1 px-3 transition duration-150 ease hover:bg-gray-700"
-                >
-                    Sign In
-                </Link>
-            )
-        }
-    }
+    const logout = () => {
+        localStorage.removeItem("token");
+        router.push("/login");
+    };
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            if (!localStorage.getItem("token")) {
+                router.push("/login");
+            } else {
+                const res = await fetch("/api/auth/check", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                });
+                const result = JSON.stringify(await res.json());
+                console.log(result);
+            }
+        };
+        checkAuth();
+    });
+
     return (
         <main className="flex min-h-screen flex-col items-center justify-center bg-gray-900 text-white">
             <h1 className="text-xl">Home</h1>
-            {showSession()}
+            <button onClick={logout}>Logout</button>
         </main>
     );
 }

@@ -1,8 +1,7 @@
 "use client";
-import {useRef, useState} from "react";
+import {FormEvent, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
-import {register} from "@/app/api/utils/register";
 
 
 export default function Register() {
@@ -10,27 +9,35 @@ export default function Register() {
     const router = useRouter();
     const ref = useRef<HTMLFormElement>(null);
 
-    const handleSubmit = async (formData: FormData) => {
-        const r = await register({
-            email: formData.get("email"),
-            password: formData.get("password"),
-            name: formData.get("name")
-        });
-        ref.current?.reset();
-        if (r?.error) {
-            setError(r.error);
-            return;
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const response = await fetch("/api/auth/register", {
+            method: "POST",
+            body: JSON.stringify({
+                name: formData.get("name"),
+                email: formData.get("email"),
+                password: formData.get("password")
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }});
+        if (response.ok) {
+            const {token} = await response.json();
+            localStorage.setItem("token", token);
+            router.push("/");
         } else {
-            return router.push("/login");
+            const {error} = await response.json();
+            setError(error);
         }
     };
 
     return (
         <section className="w-full h-screen flex items-center justify-center bg-gray-900">
-            <form ref={ref}
-                  action={handleSubmit}
-                  className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2
-        border border-solid border-gray-700 bg-gray-800 rounded">
+            <form
+                className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2
+        border border-solid border-gray-700 bg-gray-800 rounded"
+                onSubmit={handleSubmit}>
                 {error && <div className="text-red-500">{error}</div>}
                 <h1 className="mb-5 w-full text-2xl font-bold text-white">Register</h1>
 

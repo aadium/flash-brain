@@ -1,4 +1,3 @@
-// src/app/api/flash/add/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/app/api/utils/mongodb';
 import FlashSet from '@/app/api/models/FlashSet';

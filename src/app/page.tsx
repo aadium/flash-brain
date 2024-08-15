@@ -21,8 +21,10 @@ export default function Home() {
                         Authorization: `Bearer ${localStorage.getItem("token")}`
                     }
                 });
-                const result = JSON.stringify(await res.json());
-                console.log(result);
+                const result = await res.json();
+                if (result.valid === false) {
+                    router.push("/login");
+                }
             }
         };
         checkAuth();

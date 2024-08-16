@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 export default function Home() {
     const router = useRouter();
+    const [userId, setUserId] = useState("");
 
     const logout = () => {
         localStorage.removeItem("token");
@@ -25,6 +26,7 @@ export default function Home() {
                 if (result.valid === false) {
                     router.push("/login");
                 }
+                setUserId(result.decoded.userId);
             }
         };
         checkAuth();

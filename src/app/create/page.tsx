@@ -16,6 +16,18 @@ export default function CreateFlashSetPage() {
         setFlashCards(newFlashCards);
     };
 
+    const generateUsingAI = async () => {
+        const res = await fetch(`/api/flash/generate/?topic=${flashSetName}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            },
+        });
+        const data = await res.json();
+        setFlashCards(data);
+    }
+
     const addFlashCard = () => {
         setFlashCards([...flashCards, {question: "", answer: ""}]);
     };
@@ -30,9 +42,10 @@ export default function CreateFlashSetPage() {
         const res = await fetch("/api/flash/add", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`
             },
-            body: JSON.stringify({userId: userId, name: flashSetName, set: flashCards})
+            body: JSON.stringify({name: flashSetName, set: flashCards})
         });
         if (res.ok) {
             router.push("/");
@@ -74,6 +87,9 @@ return (
                         className="bg-gray-800 p-2 rounded"
                         required
                     />
+                    <button onClick={generateUsingAI}
+                            className="bg-blue-500 hover:bg-blue-700 p-2 rounded">Generate using AI
+                    </button>
                     {flashCards.map((flashCard, index) => (
                         <div key={index} className="bg-gray-800 p-4 rounded-lg shadow-md flex flex-col gap-2">
                             <input
@@ -92,11 +108,16 @@ return (
                                 className="bg-gray-700 p-2 rounded"
                                 required
                             />
-                            <button type="button" onClick={() => removeFlashCard(index)} className="bg-red-500 hover:bg-red-700 p-2 rounded">Remove</button>
+                            <button type="button" onClick={() => removeFlashCard(index)}
+                                    className="bg-red-500 hover:bg-red-700 p-2 rounded">Remove
+                            </button>
                         </div>
                     ))}
-                    <button type="button" onClick={addFlashCard} className="bg-blue-500 hover:bg-blue-700 p-2 rounded">Add Flashcard</button>
-                    <button type="submit" className="bg-green-500 hover:bg-green-700 p-2 rounded">Create Set</button>
+                    <button type="button" onClick={addFlashCard}
+                            className="bg-blue-500 hover:bg-blue-700 p-2 rounded">Add Flashcard
+                    </button>
+                    <button type="submit" className="bg-green-500 hover:bg-green-700 p-2 rounded">Create Set
+                    </button>
                 </form>
             </div>
         </main>

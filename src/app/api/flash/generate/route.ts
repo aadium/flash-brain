@@ -14,9 +14,7 @@ export async function GET(req: NextRequest) {
                 "model": "meta-llama/llama-3.1-8b-instruct:free",
                 "messages": [
                     {
-                        "role": "user", "content": "Generate a flash card set about " + topic + " in" +
-                            " the" +
-                            " following JSON format: [{\"question\": \"What is the capital of France?\", \"answer\": \"Paris\"}]"
+                        "role": "user", "content": "Generate a flash card set about " + topic + " in the following JSON format: [{\"question\": \"What is the capital of France?\", \"answer\": \"Paris\"}]"
                     },
                 ],
             })
@@ -31,13 +29,13 @@ export async function GET(req: NextRequest) {
         const message = data.choices[0].message.content;
 
         // Add error handling for JSON extraction
-        const jsonMatch = message.match(/```([\s\S]*?)```/);
+        const jsonMatch = message.match(/\[([\s\S]*?)\]/);
         if (!jsonMatch) {
             console.error('Error extracting JSON from message:', message);
             return NextResponse.json({ error: 'Error extracting JSON from message' }, { status: 500 });
         }
 
-        const jsonString = jsonMatch[1].trim();
+        const jsonString = jsonMatch[0].trim();
         const cleanedJsonString = jsonString.replace(/[^\x20-\x7E]/g, '');
 
         // Add error handling for JSON parsing

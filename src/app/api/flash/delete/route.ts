@@ -1,12 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/app/api/utils/mongodb';
 import FlashSet from '@/app/api/models/FlashSet';
+import jwt, {JwtPayload} from "jsonwebtoken";
 
 export async function DELETE(req: NextRequest) {
     try {
         await connectDB();
 
-        const userId = req.nextUrl.searchParams.get('userId');
+        const token = req.headers.get('Authorization')?.split(' ')[1];
+        if (!token) {
+            return NextResponse.json({ error: 'Authorization token is required' }, { status: 401 });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+        if (!decoded) {
+            return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+        }
+        const userId = decoded.id;
+        if (!userId) {
+            return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
+        }
         const setId = req.nextUrl.searchParams.get('setId');
         if (!userId || !setId) {
             return NextResponse.json({ error: 'User ID and Set ID are required' }, { status: 400 });

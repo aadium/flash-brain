@@ -17,7 +17,11 @@ export default function Home() {
 
     useEffect(() => {
         const fetchUserFlashCards = async (userId: String) => {
-            const res = await fetch("/api/flash/get/?userId=" + userId);
+            const res = await fetch("/api/flash/get", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
             const data = await res.json();
             setUserFlashCards(data.flashSets);
         }

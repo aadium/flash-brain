@@ -2,11 +2,14 @@
 import {useRouter, useParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import Header from "@/app/widgets/header";
+import Link from "next/link";
+import {FaEdit} from "react-icons/fa";
 
 export default function FlashSetPage() {
     const router = useRouter();
     const {id} = useParams();
     const [userId, setUserId] = useState("");
+    const [flashCardUserId, setFlashCardUserId] = useState("");
     const [flashCards, setFlashCards] = useState([]);
     const [flashSetName, setFlashSetName] = useState("");
 
@@ -15,6 +18,7 @@ export default function FlashSetPage() {
             const res = await fetch(`/api/flash/get/${id}/?userId=${userId}`);
             const data = await res.json();
             setFlashCards(data.flashSet.set);
+            setFlashCardUserId(data.flashSet.userId);
             setFlashSetName(data.flashSet.name);
         };
         const checkAuth = async () => {
@@ -42,10 +46,20 @@ export default function FlashSetPage() {
             <Header />
             <main className="flex-grow p-4">
                 <button onClick={() => router.back()} className="mb-4 bg-gray-800 p-2 rounded">Back</button>
-                <h2 className="text-4xl my-4 text-center">{flashSetName}</h2>
+                <div className="flex flex-row mb-4 w-full justify-center items-center">
+                    <h2 className="text-4xl mr-4 text-center">{flashSetName}</h2>
+                    {
+                        userId === flashCardUserId && (
+                            <button className="bg-gray-800 p-2 rounded mb-4" onClick={
+                                () => router.push(`/${id}/edit`)
+                            }><FaEdit/></button>
+                        )
+                    }
+                </div>
                 <div className="flex flex-col gap-4">
                     {flashCards.map((flashCard: any) => (
-                        <div key={flashCard._id} className="bg-gray-800 p-4 rounded-lg shadow-md flex justify-between items-center">
+                        <div key={flashCard._id}
+                             className="bg-gray-800 p-4 rounded-lg shadow-md flex justify-between items-center">
                             <h3 className="text-xl font-semibold">{flashCard.question}</h3>
                             <p className="text-sm text-gray-400">{flashCard.answer}</p>
                         </div>

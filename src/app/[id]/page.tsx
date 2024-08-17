@@ -2,8 +2,8 @@
 import {useRouter, useParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import Header from "@/app/widgets/header";
-import Link from "next/link";
 import {FaEdit} from "react-icons/fa";
+import FlipCard from "@/app/widgets/flashcard";
 
 export default function FlashSetPage() {
     const router = useRouter();
@@ -62,11 +62,7 @@ export default function FlashSetPage() {
                 </div>
                 <div className="flex flex-col gap-4">
                     {flashCards.map((flashCard: any) => (
-                        <div key={flashCard._id}
-                             className="bg-gray-800 p-4 rounded-lg shadow-md flex justify-between items-center">
-                            <h3 className="text-xl font-semibold">{flashCard.question}</h3>
-                            <p className="text-sm text-gray-400">{flashCard.answer}</p>
-                        </div>
+                        <FlipCard key={flashCard._id} id={flashCard._id} question={flashCard.question} answer={flashCard.answer} />
                     ))}
                 </div>
             </main>

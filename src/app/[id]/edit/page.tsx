@@ -13,7 +13,7 @@ export default function FlashSetPage() {
 
     useEffect(() => {
         const fetchFlashCards = async (userId: String) => {
-            const res = await fetch(`/api/flash/get/${id}`, {
+            const res = await fetch(`/api/flash/get/set/${id}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
@@ -84,7 +84,11 @@ export default function FlashSetPage() {
     };
 
     const cancelChanges = async () => {
-        const res = await fetch(`/api/flash/get/${id}/?userId=${userId}`);
+        const res = await fetch(`/api/flash/get/set/${id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+        });
         const data = await res.json();
         setFlashCards(data.flashSet.set);
         setFlashSetName(data.flashSet.name);

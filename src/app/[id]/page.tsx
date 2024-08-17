@@ -15,7 +15,7 @@ export default function FlashSetPage() {
 
     useEffect(() => {
         const fetchFlashCards = async (userId: String) => {
-            const res = await fetch(`/api/flash/get/${id}`, {
+            const res = await fetch(`/api/flash/get/set/${id}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }

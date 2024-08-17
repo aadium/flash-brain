@@ -19,8 +19,12 @@ export default function FlashSetPage() {
                 }
             });
             const data = await res.json();
-            setFlashCards(data.flashSet.set);
-            setFlashSetName(data.flashSet.name);
+            if (data.flashSet.userId !== userId) {
+                router.push(`/${id}`);
+            } else {
+                setFlashCards(data.flashSet.set);
+                setFlashSetName(data.flashSet.name);
+            }
         };
         const checkAuth = async () => {
             if (!localStorage.getItem("token")) {

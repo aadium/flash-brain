@@ -30,9 +30,10 @@ export default function CreateFlashSetPage() {
         const res = await fetch("/api/flash/add", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`
             },
-            body: JSON.stringify({userId: userId, name: flashSetName, set: flashCards})
+            body: JSON.stringify({name: flashSetName, set: flashCards})
         });
         if (res.ok) {
             router.push("/");

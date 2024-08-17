@@ -13,7 +13,11 @@ export default function FlashSetPage() {
 
     useEffect(() => {
         const fetchFlashCards = async (userId: String) => {
-            const res = await fetch(`/api/flash/get/${id}/?userId=${userId}`);
+            const res = await fetch(`/api/flash/get/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
             const data = await res.json();
             setFlashCards(data.flashSet.set);
             setFlashSetName(data.flashSet.name);
@@ -55,18 +59,24 @@ export default function FlashSetPage() {
     };
 
     const updateFlashCards = async () => {
-        await fetch('/api/flash/update', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userId: userId,
-                setId: id,
-                name: flashSetName,
-                set: flashCards
-            })
-        });
+        try {
+            await fetch('/api/flash/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    setId: id,
+                    name: flashSetName,
+                    set: flashCards
+                })
+            });
+            alert('Flashcards updated successfully');
+        } catch (error) {
+            console.error('Error updating flashcards:', error);
+            alert('Error updating flashcards');
+        }
     };
 
     const cancelChanges = async () => {

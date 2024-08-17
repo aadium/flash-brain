@@ -34,12 +34,13 @@ export default function Home() {
                         Authorization: `Bearer ${localStorage.getItem("token")}`
                     }
                 });
-                const result = await res.json();
-                if (result.valid === false) {
+                if (!res.ok) {
                     router.push("/login");
+                } else {
+                    const result = await res.json();
+                    setUserId(result.decoded.id);
+                    await fetchUserFlashCards(result.decoded.id);
                 }
-                setUserId(result.decoded.id);
-                await fetchUserFlashCards(result.decoded.id);
             }
         };
         checkAuth();

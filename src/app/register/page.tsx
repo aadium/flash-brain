@@ -16,8 +16,7 @@ export default function Register() {
             body: JSON.stringify({
                 name: formData.get("name"),
                 email: formData.get("email"),
-                password: formData.get("password"),
-                dateOfBirth: formData.get("dateOfBirth")
+                password: formData.get("password")
             }),
             headers: {
                 "Content-Type": "application/json"
@@ -66,12 +65,6 @@ export default function Register() {
                     />
                 </div>
 
-                <label className="w-full text-sm text-gray-300">Date of Birth</label>
-                <input
-                    type="date"
-                    className="w-full h-8 border border-solid border-gray-700 py-1 px-2.5 rounded text-[13px] bg-gray-700 text-white"
-                    name="dateOfBirth"
-                />
                 {error && <div className="text-red-500">{error}</div>}
                 <button className="w-full border border-solid border-gray-700 py-1.5 mt-2.5 rounded
         transition duration-150 ease hover:bg-gray-700 text-white">

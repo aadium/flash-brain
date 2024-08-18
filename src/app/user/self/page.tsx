@@ -65,6 +65,7 @@ export default function SelfUserPage() {
                 setUser(data);
             }
         } catch (error) {
+            alert("An error occured: " + error);
             console.error(error);
         } finally {
             setLoading(false);

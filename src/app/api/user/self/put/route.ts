@@ -23,6 +23,12 @@ export async function PUT(req: NextRequest) {
 
         const { name, email } = await req.json();
 
+        // Email validation regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+        }
+
         const updatedUser = await User.findByIdAndUpdate(
             userId,
             { name, email },

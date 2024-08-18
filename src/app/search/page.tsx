@@ -1,10 +1,11 @@
 "use client";
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Header from "@/app/widgets/header";
-import {FaSearch} from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 
-export default function SearchResults() {
+function SearchResultsContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const query = searchParams.get("query");
@@ -33,8 +34,7 @@ export default function SearchResults() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-gray-900 text-white">
-            <Header />
+        <div className="flex flex-col bg-gray-900 text-white">
             <section className="flex-grow p-4 mt-10">
                 <div className="flex flex-row items-center justify-between p-4">
                     <div className="flex w-full">
@@ -49,7 +49,7 @@ export default function SearchResults() {
                             onClick={handleSearch}
                             className="bg-blue-600 hover:bg-blue-700 p-2 rounded-r flex-shrink-0"
                         >
-                            <FaSearch/>
+                            <FaSearch />
                         </button>
                     </div>
                 </div>
@@ -65,6 +65,17 @@ export default function SearchResults() {
                     ))}
                 </div>
             </section>
+        </div>
+    );
+}
+
+export default function SearchResults() {
+    return (
+        <div className="min-h-screen flex flex-col bg-gray-900 text-white">
+            <Header />
+            <Suspense fallback={<div>Loading...</div>}>
+                <SearchResultsContent />
+            </Suspense>
         </div>
     );
 }

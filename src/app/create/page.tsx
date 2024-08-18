@@ -18,7 +18,7 @@ export default function CreateFlashSetPage() {
     };
 
     const generateUsingAI = async () => {
-        const res = await fetch(`/api/flash/generate/?topic=${flashSetName}`, {
+        const res = await fetch(`/api/flash/generate/${flashSetName}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

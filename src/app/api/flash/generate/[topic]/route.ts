@@ -3,7 +3,7 @@ import FlashSet from '@/app/api/models/FlashSet';
 
 export async function GET(req: NextRequest) {
     try {
-        const topic = req.nextUrl.searchParams.get('topic');
+        const topic = decodeURIComponent(req.nextUrl.pathname.split('/').pop() || '');
         const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {

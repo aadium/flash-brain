@@ -55,7 +55,7 @@ export default function Home() {
     return (
         <div className="min-h-screen flex flex-col bg-gray-900 text-white">
             <Header/>
-            <header className="flex flex-col items-center justify-center flex-grow">
+            <header className="flex flex-col items-center justify-center flex-grow mt-10">
                 <h1 className="text-4xl mb-4">Welcome to Flash Brain</h1>
                 <p className="text-xl">Instantly generate flashcards of the provided topic</p>
             </header>
@@ -92,7 +92,7 @@ export default function Home() {
                                          className="relative bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer group"
                                          onClick={() => router.push(`/${flashCard._id}`)}>
                                         <h3 className="text-xl font-semibold">{flashCard.name}</h3>
-                                        <h5 className="text-sm text-gray-400">{flashCard.set.length} Flashcards</h5>
+                                        <h5 className="text-sm text-gray-400">{flashCard.set.length} Flashcard(s)</h5>
                                         <button
                                             type="button"
                                             className="absolute top-2 right-2 bg-red-500 hover:bg-red-700 p-2 rounded-full opacity-100"

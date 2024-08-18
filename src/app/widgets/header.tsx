@@ -62,7 +62,7 @@ export default function Header() {
                             {menuOpen && (
                                 <div className="absolute right-0 mt-2 w-48 bg-gray-800 shadow-lg z-10">
                                     <Link href="/user/self" className="block px-4 py-2 text-white hover:bg-gray-700">Profile</Link>
-                                    <button onClick={logout} className="block w-full text-left px-4 py-2 text-white hover:bg-gray-700">Logout</button>
+                                    <button onClick={logout} className="block w-full text-left px-4 py-2 text-white hover:bg-red-500">Logout</button>
                                 </div>
                             )}
                         </li>

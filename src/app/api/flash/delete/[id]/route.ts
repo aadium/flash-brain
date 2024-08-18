@@ -20,16 +20,19 @@ export async function DELETE(req: NextRequest) {
         if (!userId) {
             return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
         }
-        const setId = req.nextUrl.searchParams.get('setId');
+        const setId = decodeURIComponent(req.nextUrl.pathname.split('/').pop() || '');
         if (!userId || !setId) {
             return NextResponse.json({ error: 'User ID and Set ID are required' }, { status: 400 });
         }
 
-        const flashSet = await FlashSet.findOneAndDelete({ userId, _id: setId });
+        const flashSet = await FlashSet.findById(setId);
         if (!flashSet) {
             return NextResponse.json({ error: 'Flash set not found' }, { status: 404 });
         }
-
+        if (flashSet.userId.toString() !== userId) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+        }
+        await FlashSet.findOneAndDelete({ _id: setId });
         return NextResponse.json({ flashSet });
     } catch (error) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

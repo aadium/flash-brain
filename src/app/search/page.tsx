@@ -53,7 +53,7 @@ export default function SearchResults() {
                         </button>
                     </div>
                 </div>
-                <h2 className="text-2xl mb-4">Search Results for "{query}"</h2>
+                <h2 className="text-2xl mb-4">Search Results for <b>{query}</b></h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {flashSets.map((flashSet: any) => (
                         <div key={flashSet._id}

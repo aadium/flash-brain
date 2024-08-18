@@ -1,8 +1,7 @@
 "use client";
-import {FormEvent, useRef, useState} from "react";
-import {useRouter} from "next/navigation";
+import { FormEvent, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-
 
 export default function Register() {
     const [error, setError] = useState<string>();
@@ -17,17 +16,18 @@ export default function Register() {
             body: JSON.stringify({
                 name: formData.get("name"),
                 email: formData.get("email"),
-                password: formData.get("password")
+                password: formData.get("password"),
+                dateOfBirth: formData.get("dateOfBirth")
             }),
             headers: {
                 "Content-Type": "application/json"
-            }});
+            }
+        });
         if (response.ok) {
-            const {token} = await response.json();
-            localStorage.setItem("token", token);
+            const { token } = await response.json();
             router.push("/");
         } else {
-            const {error} = await response.json();
+            const { error } = await response.json();
             setError(error);
         }
     };
@@ -66,6 +66,13 @@ export default function Register() {
                         name="password"
                     />
                 </div>
+
+                <label className="w-full text-sm text-gray-300">Date of Birth</label>
+                <input
+                    type="date"
+                    className="w-full h-8 border border-solid border-gray-700 py-1 px-2.5 rounded text-[13px] bg-gray-700 text-white"
+                    name="dateOfBirth"
+                />
 
                 <button className="w-full border border-solid border-gray-700 py-1.5 mt-2.5 rounded
         transition duration-150 ease hover:bg-gray-700 text-white">

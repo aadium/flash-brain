@@ -3,7 +3,7 @@ import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import Header from "@/app/widgets/header";
 import Link from "next/link";
-import {FaPlus} from "react-icons/fa";
+import {FaPlus, FaTrash} from "react-icons/fa";
 
 export default function Home() {
     const router = useRouter();
@@ -15,16 +15,16 @@ export default function Home() {
         router.push("/login");
     };
 
+    const fetchUserFlashCards = async (userId: String) => {
+        const res = await fetch("/api/flash/get", {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+        });
+        const data = await res.json();
+        setUserFlashCards(data.flashSets);
+    }
     useEffect(() => {
-        const fetchUserFlashCards = async (userId: String) => {
-            const res = await fetch("/api/flash/get", {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
-            });
-            const data = await res.json();
-            setUserFlashCards(data.flashSets);
-        }
         const checkAuth = async () => {
             if (!localStorage.getItem("token")) {
                 router.push("/login");
@@ -61,14 +61,38 @@ export default function Home() {
                 {
                     userId && (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {
-                                userFlashCards.map((flashCard: any) => (
-                                    <div key={flashCard._id} className="bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer" onClick={() => router.push(`/${flashCard._id}`)}>
-                                        <h3 className="text-xl font-semibold">{flashCard.name}</h3>
-                                        <h5 className="text-sm text-gray-400">{flashCard.set.length} Flashcards</h5>
-                                    </div>
-                                ))
-                            }
+                        {
+                            userFlashCards.map((flashCard: any) => (
+                                <div key={flashCard._id} className="relative bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer group" onClick={() => router.push(`/${flashCard._id}`)}>
+                                    <h3 className="text-xl font-semibold">{flashCard.name}</h3>
+                                    <h5 className="text-sm text-gray-400">{flashCard.set.length} Flashcards</h5>
+                                    <button
+                                        type="button"
+                                        className="absolute top-2 right-2 bg-red-500 hover:bg-red-700 p-2 rounded-full opacity-100"
+                                        onClick={async (e) => {
+                                            e.stopPropagation();
+                                            const confirmDelete = confirm("Are you sure you want to delete this flash set?");
+                                            if (confirmDelete) {
+                                                const res = await fetch(`/api/flash/delete/${flashCard._id}`, {
+                                                    method: "DELETE",
+                                                    headers: {
+                                                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                                                    }
+                                                })
+                                                if (res.ok) {
+                                                    alert("Flashcard set deleted successfully");
+                                                    await fetchUserFlashCards(userId);
+                                                }
+                                            } else {
+                                                return;
+                                            }
+                                        }}
+                                    >
+                                        <FaTrash className="text-white" />
+                                    </button>
+                                </div>
+                            ))
+                        }
                         </div>
                     )
                 }

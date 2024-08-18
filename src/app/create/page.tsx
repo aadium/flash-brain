@@ -9,6 +9,7 @@ export default function CreateFlashSetPage() {
     const [userId, setUserId] = useState("");
     const [flashSetName, setFlashSetName] = useState("");
     const [flashCards, setFlashCards] = useState([{question: "", answer: ""}]);
+    const [generateLoading, setGenerateLoading] = useState(false);
 
     const handleFlashCardChange = (index: number, field: string, value: string) => {
         const newFlashCards = [...flashCards];
@@ -18,15 +19,27 @@ export default function CreateFlashSetPage() {
     };
 
     const generateUsingAI = async () => {
-        const res = await fetch(`/api/flash/generate/${flashSetName}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            },
-        });
-        const data = await res.json();
-        setFlashCards(data);
+        setGenerateLoading(true);
+        try {
+            if (!flashSetName) {
+                alert("Flashcard set name is required");
+                return;
+            }
+            const res = await fetch(`/api/flash/generate/${flashSetName}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                },
+            });
+            const data = await res.json();
+            setFlashCards(data);
+        } catch (error) {
+            alert ("Error generating flashcards");
+            console.error(error);
+        } finally {
+            setGenerateLoading(false);
+        }
     }
 
     const extractFromCSV = async (file: File) => {
@@ -122,7 +135,7 @@ export default function CreateFlashSetPage() {
                         />
                         <label htmlFor="file" className="bg-green-600 p-2 rounded cursor-pointer">Upload CSV</label>
                         <button onClick={generateUsingAI}
-                                className="bg-blue-500 hover:bg-blue-700 p-2 rounded">Generate using AI
+                                className="bg-blue-500 hover:bg-blue-700 p-2 rounded">{generateLoading ? "Generating..." : "Generate Using AI"}
                         </button>
                     </div>
                     {flashCards.map((flashCard, index) => (

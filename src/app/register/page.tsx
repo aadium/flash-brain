@@ -24,6 +24,7 @@ export default function Register() {
         });
         if (response.ok) {
             const { token } = await response.json();
+            localStorage.setItem("token", token);
             router.push("/");
         } else {
             const { error } = await response.json();

@@ -1,14 +1,18 @@
 "use client";
-import {useRouter} from "next/navigation";
-import React, {useEffect, useState} from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import Header from "@/app/widgets/header";
-import {FaPlus, FaTrash} from "react-icons/fa";
+import { FaPlus, FaTrash } from "react-icons/fa";
+import * as pdfjsLib from "pdfjs-dist/build/pdf";
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 export default function CreateFlashSetPage() {
     const router = useRouter();
     const [userId, setUserId] = useState("");
     const [flashSetName, setFlashSetName] = useState("");
-    const [flashCards, setFlashCards] = useState([{question: "", answer: ""}]);
+    const [flashCards, setFlashCards] = useState([{ question: "", answer: "" }]);
     const [generateLoading, setGenerateLoading] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
     const [content, setContent] = useState("");
@@ -23,17 +27,13 @@ export default function CreateFlashSetPage() {
     const generateUsingAI = async () => {
         setGenerateLoading(true);
         try {
-            if (!flashSetName) {
-                alert("Flashcard set name is required");
-                return;
-            }
             const res = await fetch(`/api/flash/generate`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 },
-                body: JSON.stringify({ topic: flashSetName, content })
+                body: JSON.stringify({ content })
             });
             const data = await res.json();
             setFlashCards(data);
@@ -49,20 +49,39 @@ export default function CreateFlashSetPage() {
     const extractFromCSV = async (file: File) => {
         const reader = new FileReader();
         reader.onload = async (e) => {
-            // @ts-ignore
-            const text = e.target.result as string;
+            const text = e.target?.result as string;
             const lines = text.split("\n");
             const newFlashCards = lines.map((line) => {
                 const [question, answer] = line.split(",");
-                return {question, answer};
+                return { question, answer };
             });
             setFlashCards(newFlashCards);
         };
         reader.readAsText(file);
-    }
+    };
+
+    const extractFromPDF = async (file: File) => {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const typedArray = new Uint8Array(e.target?.result as ArrayBuffer);
+            const pdf = await pdfjsLib.getDocument(typedArray).promise;
+            let extractedText = "";
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items.map((item: any) => item.str).join(" ");
+                extractedText += pageText + "\n";
+            }
+
+            setContent(extractedText);
+            setShowDialog(true); // Show dialog with extracted text
+        };
+        reader.readAsArrayBuffer(file);
+    };
 
     const addFlashCard = () => {
-        setFlashCards([...flashCards, {question: "", answer: ""}]);
+        setFlashCards([...flashCards, { question: "", answer: "" }]);
     };
 
     const removeFlashCard = (index: number) => {
@@ -82,7 +101,7 @@ export default function CreateFlashSetPage() {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             },
-            body: JSON.stringify({name: flashSetName, set: flashCards})
+            body: JSON.stringify({ name: flashSetName, set: flashCards })
         });
         if (res.ok) {
             router.push("/");
@@ -127,18 +146,43 @@ export default function CreateFlashSetPage() {
                         <div className="flex flex-row gap-4 justify-center">
                             <input
                                 type="file"
-                                id="file"
+                                id="csvFile"
                                 accept=".csv"
                                 onChange={(e) => {
                                     if (e.target.files && e.target.files.length > 0) {
-                                        extractFromCSV(e.target.files[0]);
+                                        const file = e.target.files[0];
+                                        if (file.type === "text/csv" || file.name.endsWith(".csv")) {
+                                            extractFromCSV(file);
+                                        } else {
+                                            alert("Please upload a valid CSV file.");
+                                        }
                                     }
                                 }}
                                 className="hidden"
                             />
-                            <label htmlFor="file" className="bg-green-600 p-2 rounded cursor-pointer">Upload CSV</label>
+                            <label htmlFor="csvFile" className="bg-green-600 p-2 rounded cursor-pointer">Upload CSV</label>
+
+                            <input
+                                type="file"
+                                id="pdfFile"
+                                accept=".pdf"
+                                onChange={(e) => {
+                                    if (e.target.files && e.target.files.length > 0) {
+                                        const file = e.target.files[0];
+                                        if (file.type === "application/pdf" || file.name.endsWith(".pdf")) {
+                                            extractFromPDF(file);
+                                        } else {
+                                            alert("Please upload a valid PDF file.");
+                                        }
+                                    }
+                                }}
+                                className="hidden"
+                            />
+                            <label htmlFor="pdfFile" className="bg-blue-600 p-2 rounded cursor-pointer">Upload PDF</label>
+
                             <button type="button" onClick={() => setShowDialog(true)}
-                                    className="bg-blue-500 hover:bg-blue-700 p-2 rounded">{generateLoading ? "Generating..." : "Generate Using AI"}
+                                    className="bg-gradient-to-r from-purple-600 to-indigo-700 hover:bg-gradient-to-r hover:from-purple-700 hover:to-indigo-800 p-2 rounded">
+                                {generateLoading ? "Generating..." : "Generate from content"}
                             </button>
                         </div>
                         {flashCards.map((flashCard, index) => (
@@ -146,7 +190,7 @@ export default function CreateFlashSetPage() {
                                 <div className='flex flex-row'>
                                     <button type="button" onClick={() => removeFlashCard(index)}
                                             className="bg-red-500 w-min hover:bg-red-700 p-2 mr-2 rounded flex items-center justify-center">
-                                        <FaTrash/>
+                                        <FaTrash />
                                     </button>
                                     <input
                                         type="text"
@@ -169,7 +213,7 @@ export default function CreateFlashSetPage() {
                         ))}
                         <button type="button" onClick={addFlashCard}
                                 className="bg-blue-500 hover:bg-blue-700 w-min p-2 rounded flex items-center justify-center">
-                            <FaPlus/>
+                            <FaPlus />
                         </button>
                         <button type="submit" className="bg-green-500 hover:bg-green-700 p-2 rounded">Create Set
                         </button>
@@ -179,7 +223,7 @@ export default function CreateFlashSetPage() {
             {showDialog && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                     <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-3/4 max-w-2xl">
-                        <h2 className="text-2xl mb-4">Enter Content for AI Generation</h2>
+                        <h2 className="text-2xl mb-4">Flashcard-generation content</h2>
                         <textarea
                             className="w-full h-64 p-2 bg-gray-700 rounded text-white"
                             value={content}
@@ -187,7 +231,9 @@ export default function CreateFlashSetPage() {
                         />
                         <div className="flex justify-end mt-4">
                             <button onClick={() => setShowDialog(false)} className="bg-red-500 hover:bg-red-700 p-2 rounded mr-2">Cancel</button>
-                            <button onClick={generateUsingAI} className="bg-green-500 hover:bg-green-700 p-2 rounded">OK</button>
+                            <button onClick={generateUsingAI} className="bg-gradient-to-r from-purple-600 to-indigo-700 hover:bg-gradient-to-r hover:from-purple-700 hover:to-indigo-800 p-2 rounded">
+                                {generateLoading ? "Generating..." : "Generate Flashcards"}
+                            </button>
                         </div>
                     </div>
                 </div>

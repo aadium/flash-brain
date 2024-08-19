@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import FlashSet from '@/app/api/models/FlashSet';
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
     try {
-        const topic = decodeURIComponent(req.nextUrl.pathname.split('/').pop() || '');
+        const { topic, content } = await req.json();
         const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -14,7 +14,9 @@ export async function GET(req: NextRequest) {
                 "model": "meta-llama/llama-3.1-8b-instruct:free",
                 "messages": [
                     {
-                        "role": "user", "content": "Generate a flash card set about " + topic + " in the following JSON format: [{\"question\": \"What is the capital of France?\", \"answer\": \"Paris\"}]"
+                        "role": "user", "content": "Generate a flash card set about " + topic + " in the" +
+                            " following JSON format: [{\"question\": \"What is the capital of France?\"," +
+                            " \"answer\": \"Paris\"}]. Use the following content for reference: " + content
                     },
                 ],
             })

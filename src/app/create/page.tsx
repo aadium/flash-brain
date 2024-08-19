@@ -10,6 +10,8 @@ export default function CreateFlashSetPage() {
     const [flashSetName, setFlashSetName] = useState("");
     const [flashCards, setFlashCards] = useState([{question: "", answer: ""}]);
     const [generateLoading, setGenerateLoading] = useState(false);
+    const [showDialog, setShowDialog] = useState(false);
+    const [content, setContent] = useState("");
 
     const handleFlashCardChange = (index: number, field: string, value: string) => {
         const newFlashCards = [...flashCards];
@@ -25,20 +27,22 @@ export default function CreateFlashSetPage() {
                 alert("Flashcard set name is required");
                 return;
             }
-            const res = await fetch(`/api/flash/generate/${flashSetName}`, {
-                method: "GET",
+            const res = await fetch(`/api/flash/generate`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 },
+                body: JSON.stringify({ topic: flashSetName, content })
             });
             const data = await res.json();
             setFlashCards(data);
         } catch (error) {
-            alert ("Error generating flashcards");
+            alert("Error generating flashcards");
             console.error(error);
         } finally {
             setGenerateLoading(false);
+            setShowDialog(false);
         }
     }
 
@@ -105,74 +109,89 @@ export default function CreateFlashSetPage() {
         checkAuth();
     }, [router]);
 
-// @ts-ignore
     return (
-    <div className="min-h-screen flex flex-col bg-gray-900 text-white">
-        <Header />
-        <main className="flex-grow p-4 flex justify-center items-center mt-10">
-            <div className="w-full max-w-lg">
-                <h2 className="text-4xl my-4 text-center">Create Flashcard Set</h2>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <input
-                        type="text"
-                        placeholder="Flashcard Set Name"
-                        value={flashSetName}
-                        onChange={(e) => setFlashSetName(e.target.value)}
-                        className="bg-gray-800 p-2 rounded"
-                        required
-                    />
-                    <div className="flex flex-row gap-4 justify-center">
+        <div className="min-h-screen flex flex-col bg-gray-900 text-white">
+            <Header />
+            <main className="flex-grow p-4 flex justify-center items-center mt-10">
+                <div className="w-full max-w-lg">
+                    <h2 className="text-4xl my-4 text-center">Create Flashcard Set</h2>
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                         <input
-                            type="file"
-                            id="file"
-                            accept=".csv"
-                            onChange={(e) => {
-                                if (e.target.files && e.target.files.length > 0) {
-                                    extractFromCSV(e.target.files[0]);
-                                }
-                            }}
-                            className="hidden"
+                            type="text"
+                            placeholder="Flashcard Set Name"
+                            value={flashSetName}
+                            onChange={(e) => setFlashSetName(e.target.value)}
+                            className="bg-gray-800 p-2 rounded"
+                            required
                         />
-                        <label htmlFor="file" className="bg-green-600 p-2 rounded cursor-pointer">Upload CSV</label>
-                        <button onClick={generateUsingAI}
-                                className="bg-blue-500 hover:bg-blue-700 p-2 rounded">{generateLoading ? "Generating..." : "Generate Using AI"}
-                        </button>
-                    </div>
-                    {flashCards.map((flashCard, index) => (
-                        <div key={index} className="bg-gray-800 p-4 rounded-lg shadow-md flex flex-col gap-2">
-                            <div className='flex flex-row'>
-                                <button type="button" onClick={() => removeFlashCard(index)}
-                                        className="bg-red-500 w-min hover:bg-red-700 p-2 mr-2 rounded flex items-center justify-center">
-                                    <FaTrash/>
-                                </button>
+                        <div className="flex flex-row gap-4 justify-center">
+                            <input
+                                type="file"
+                                id="file"
+                                accept=".csv"
+                                onChange={(e) => {
+                                    if (e.target.files && e.target.files.length > 0) {
+                                        extractFromCSV(e.target.files[0]);
+                                    }
+                                }}
+                                className="hidden"
+                            />
+                            <label htmlFor="file" className="bg-green-600 p-2 rounded cursor-pointer">Upload CSV</label>
+                            <button type="button" onClick={() => setShowDialog(true)}
+                                    className="bg-blue-500 hover:bg-blue-700 p-2 rounded">{generateLoading ? "Generating..." : "Generate Using AI"}
+                            </button>
+                        </div>
+                        {flashCards.map((flashCard, index) => (
+                            <div key={index} className="bg-gray-800 p-4 rounded-lg shadow-md flex flex-col gap-2">
+                                <div className='flex flex-row'>
+                                    <button type="button" onClick={() => removeFlashCard(index)}
+                                            className="bg-red-500 w-min hover:bg-red-700 p-2 mr-2 rounded flex items-center justify-center">
+                                        <FaTrash/>
+                                    </button>
+                                    <input
+                                        type="text"
+                                        placeholder="Question"
+                                        value={flashCard.question}
+                                        onChange={(e) => handleFlashCardChange(index, "question", e.target.value)}
+                                        className="bg-gray-700 p-2 rounded w-full"
+                                        required
+                                    />
+                                </div>
                                 <input
                                     type="text"
-                                    placeholder="Question"
-                                    value={flashCard.question}
-                                    onChange={(e) => handleFlashCardChange(index, "question", e.target.value)}
-                                    className="bg-gray-700 p-2 rounded w-full"
+                                    placeholder="Answer"
+                                    value={flashCard.answer}
+                                    onChange={(e) => handleFlashCardChange(index, "answer", e.target.value)}
+                                    className="bg-gray-700 p-2 rounded"
                                     required
                                 />
                             </div>
-                            <input
-                                type="text"
-                                placeholder="Answer"
-                                value={flashCard.answer}
-                                onChange={(e) => handleFlashCardChange(index, "answer", e.target.value)}
-                                className="bg-gray-700 p-2 rounded"
-                                required
-                            />
+                        ))}
+                        <button type="button" onClick={addFlashCard}
+                                className="bg-blue-500 hover:bg-blue-700 w-min p-2 rounded flex items-center justify-center">
+                            <FaPlus/>
+                        </button>
+                        <button type="submit" className="bg-green-500 hover:bg-green-700 p-2 rounded">Create Set
+                        </button>
+                    </form>
+                </div>
+            </main>
+            {showDialog && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-3/4 max-w-2xl">
+                        <h2 className="text-2xl mb-4">Enter Content for AI Generation</h2>
+                        <textarea
+                            className="w-full h-64 p-2 bg-gray-700 rounded text-white"
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                        />
+                        <div className="flex justify-end mt-4">
+                            <button onClick={() => setShowDialog(false)} className="bg-red-500 hover:bg-red-700 p-2 rounded mr-2">Cancel</button>
+                            <button onClick={generateUsingAI} className="bg-green-500 hover:bg-green-700 p-2 rounded">OK</button>
                         </div>
-                    ))}
-                    <button type="button" onClick={addFlashCard}
-                            className="bg-blue-500 hover:bg-blue-700 w-min p-2 rounded flex items-center justify-center">
-                        <FaPlus/>
-                    </button>
-                    <button type="submit" className="bg-green-500 hover:bg-green-700 p-2 rounded">Create Set
-                    </button>
-                </form>
-            </div>
-        </main>
-    </div>
-);
+                    </div>
+                </div>
+            )}
+        </div>
+    );
 }

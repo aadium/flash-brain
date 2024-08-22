@@ -16,7 +16,7 @@ export default function FlashCard({ id, question, answer }: FlashCardProps) {
     return (
         <div
             key={id}
-            className="bg-gray-800 rounded-lg shadow-md transition-all duration-500 cursor-pointer"
+            className="bg-gray-800 rounded-lg shadow-md transition-all duration-500 cursor-pointer border-2 border-gray-700"
             onClick={toggleAns}
         >
             <table className="w-full">

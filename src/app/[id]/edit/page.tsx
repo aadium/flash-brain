@@ -1,8 +1,8 @@
 "use client";
 import { useRouter, useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "@/app/widgets/header";
-import { FaTrash } from "react-icons/fa";
+import {FaPlus, FaTrash} from "react-icons/fa";
 
 export default function FlashSetPage() {
     const router = useRouter();
@@ -100,36 +100,43 @@ export default function FlashSetPage() {
             <main className="flex-grow p-4">
                 <button onClick={() => router.back()} className="mb-4 bg-gray-800 p-2 rounded">Back</button>
                 <h2 className="text-4xl my-4 text-center">{flashSetName}</h2>
-                <form className="flex flex-col gap-4">
-                    {flashCards.map((flashCard, index) => (
-                        <div key={index} className="bg-gray-800 p-4 rounded-lg shadow-md flex justify-between items-center">
-                            <input
-                                type="text"
+                <div className="flex justify-center items-center">
+                    <form className="flex flex-col gap-4 w-4/5">
+                        {flashCards.map((flashCard, index) => (
+                            <div key={index}
+                                 className="bg-gray-800 p-2 rounded-lg shadow-md flex justify-between items-center">
+                            <textarea
                                 placeholder="Question"
                                 value={flashCard.question}
                                 onChange={(e) => handleFlashCardChange(index, "question", e.target.value)}
-                                className="bg-gray-700 p-2 rounded flex-grow mr-2"
+                                className="w-full border border-solid border-gray-700 text-[14px] rounded p-2 bg-gray-800 text-white mr-1"
                                 required
                             />
-                            <input
-                                type="text"
-                                placeholder="Answer"
-                                value={flashCard.answer}
-                                onChange={(e) => handleFlashCardChange(index, "answer", e.target.value)}
-                                className="bg-gray-700 p-2 rounded flex-grow ml-2"
-                                required
-                            />
-                            <button type="button" onClick={() => removeFlashCard(index)} className="bg-red-500 hover:bg-red-700 p-2 rounded ml-2">
-                                <FaTrash />
+                                <textarea
+                                    placeholder="Answer"
+                                    value={flashCard.answer}
+                                    onChange={(e) => handleFlashCardChange(index, "answer", e.target.value)}
+                                    className="w-full border border-solid border-gray-700 text-[14px] rounded p-2 bg-gray-800 text-white ml-1"
+                                    required
+                                />
+                                <FaTrash onClick={() => removeFlashCard(index)}
+                                         className='m-2 text-red-400 hover:text-red-600 w-10 transition duration-150 cursor-pointer'/>
+                            </div>
+                        ))}
+                        <div className="flex gap-4 justify-center items-center">
+                            <button type="button" onClick={updateFlashCards}
+                                    className="bg-green-700 w-1/4 hover:bg-green-600 p-2 rounded transition duration-150">Save
+                            </button>
+                            <button type="button" onClick={cancelChanges}
+                                    className="bg-red-800 w-1/4 hover:bg-red-700 p-2 rounded transition duration-150">Cancel
+                            </button>
+                            <button type="button" onClick={addFlashCard}
+                                    className="bg-blue-500 hover:bg-blue-700 w-10 h-10 p-2 rounded flex items-center justify-center transition duration-150">
+                                <FaPlus/>
                             </button>
                         </div>
-                    ))}
-                    <button type="button" onClick={addFlashCard} className="bg-blue-500 hover:bg-blue-700 p-2 rounded">Add Flashcard</button>
-                    <div className="flex gap-4">
-                        <button type="button" onClick={updateFlashCards} className="bg-green-500 hover:bg-green-700 p-2 rounded">Save</button>
-                        <button type="button" onClick={cancelChanges} className="bg-gray-500 hover:bg-gray-700 p-2 rounded">Cancel</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </main>
         </div>
     );

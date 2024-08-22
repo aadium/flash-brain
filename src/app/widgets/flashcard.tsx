@@ -16,16 +16,16 @@ export default function FlashCard({ id, question, answer }: FlashCardProps) {
     return (
         <div
             key={id}
-            className="bg-gray-800 p-4 rounded-lg shadow-md transition-all duration-500 cursor-pointer"
+            className="bg-gray-800 rounded-lg shadow-md transition-all duration-500 cursor-pointer border-2 border-gray-700"
             onClick={toggleAns}
         >
             <table className="w-full">
                 <tbody>
                     <tr>
-                        <td className="text-xl font-semibold w-1/2">
+                        <td className="text-xl font-semibold w-1/2 border-r-2 border-gray-700 p-4">
                             {question}
                         </td>
-                        <td className="text-md text-gray-400 font-semibold w-1/2">
+                        <td className="text-md text-gray-400 text-center font-semibold w-1/2 p-4">
                             {ansShown ? answer : 'Click to see answer'}
                         </td>
                     </tr>

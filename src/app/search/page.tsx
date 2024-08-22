@@ -11,15 +11,13 @@ function SearchResultsContent() {
     const query = searchParams.get("query");
     const [flashSets, setFlashSets] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [token, setToken] = useState("");
 
     useEffect(() => {
+        setToken(localStorage.getItem("token") || "");
         setSearchQuery(query || "");
         const fetchSearchResults = async () => {
-            const res = await fetch(`/api/flash/get/topic/${encodeURIComponent(query || "")}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
-            });
+            const res = await fetch(`/api/flash/get/topic/${encodeURIComponent(query || "")}`);
             const data = await res.json();
             setFlashSets(data);
         };
@@ -42,14 +40,14 @@ function SearchResultsContent() {
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="p-2 rounded-l bg-gray-700 text-white flex-grow"
+                            className="w-full border-2 border-solid border-gray-700 border-r-gray-800 text-[15px] rounded-l p-2 bg-gray-800 text-white"
                             placeholder="Search flashcard sets..."
                         />
                         <button
                             onClick={handleSearch}
-                            className="bg-blue-600 hover:bg-blue-700 p-2 rounded-r flex-shrink-0"
+                            className="bg-gray-800 border-2 border-gray-700 hover:bg-gray-700 p-2 rounded-r flex-shrink-0 transition duration-150"
                         >
-                            <FaSearch />
+                            <FaSearch/>
                         </button>
                     </div>
                 </div>
@@ -58,7 +56,9 @@ function SearchResultsContent() {
                     {flashSets.map((flashSet: any) => (
                         <div key={flashSet._id}
                              className="bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer"
-                             onClick={() => router.push(`/${flashSet._id}`)}>
+                             onClick={() => router.push(
+                                 token ? `/${flashSet._id}` : "/login"
+                             )}>
                             <h3 className="text-xl font-semibold">{flashSet.name}</h3>
                             <h5 className="text-sm text-gray-400">{flashSet.set.length} Flashcard(s)</h5>
                         </div>

@@ -68,20 +68,12 @@ export default function FlashSetPage() {
     return (
         <div className="min-h-screen flex flex-col bg-gray-900 text-white">
             <Header />
-            <main className="flex-grow p-4">
-                <button onClick={() => router.back()} className="mb-4 bg-gray-800 p-2 rounded">Back</button>
+            <main className="flex-grow p-4 mt-16">
                 <div className="flex flex-col mb-4 w-full justify-center items-center">
                     <div className="flex flex-row mb-4 w-full justify-center items-center">
-                        {
-                            userId === flashCardUserId && (
-                                <button className="bg-gray-800 p-2 rounded mb-4" onClick={
-                                    () => router.push(`/${id}/edit`)
-                                }><FaEdit/></button>
-                            )
-                        }
                         <h2 className="text-4xl mr-4 text-center">{flashSetName}</h2>
                     </div>
-                    <h3 className="text-xl text-gray-400">
+                    <h3 className="text-xl text-gray-400 flex flex-col">
                         {
                             (userId !== flashCardUserId) ? (
                                 <button onClick={() => router.push(`/user/${flashCardUserId}`)} className="hover:underline">
@@ -93,12 +85,23 @@ export default function FlashSetPage() {
                         }
                     </h3>
                 </div>
-                    <div className="flex flex-col gap-4">
+                <div className="flex justify-center items-center">
+                    <div className="flex flex-col gap-4 w-4/5">
                         {flashCards.map((flashCard: any) => (
-                            <FlipCard key={flashCard._id} id={flashCard._id} question={flashCard.question}
-                                      answer={flashCard.answer}/>
+                            <FlipCard key={flashCard._id} id={flashCard._id} question={flashCard.question} answer={flashCard.answer} />
                         ))}
+                        {userId === flashCardUserId && (
+                            <div className="flex justify-center items-center">
+                                <button
+                                className="text-white border border-gray-700 px-10 py-2 w-min rounded-md bg-gray-800 hover:bg-gray-700 transition duration-150"
+                                onClick={() => router.push(`/${id}/edit`)}
+                        >
+                        Edit
+                                </button>
+                            </div>
+                        )}
                     </div>
+                </div>
             </main>
         </div>
 );

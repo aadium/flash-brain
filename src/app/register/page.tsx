@@ -38,38 +38,36 @@ export default function Register() {
                 className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2
         border border-solid border-gray-700 bg-gray-800 rounded"
                 onSubmit={handleSubmit}>
-                <h1 className="mb-5 w-full text-2xl font-bold text-white">Register</h1>
+                <h1 className="mb-5 w-full text-2xl font-bold text-white">Sign Up</h1>
 
                 <label className="w-full text-sm text-gray-300">Full Name</label>
                 <input
                     type="text"
-                    placeholder="Full Name"
-                    className="w-full h-8 border border-solid border-gray-700 py-1 px-2.5 rounded text-[13px] bg-gray-700 text-white"
+                    placeholder="Enter your full name"
+                    className="w-full border border-solid border-gray-700 text-[13px] rounded p-2 bg-gray-800 text-white"
                     name="name"
                 />
 
                 <label className="w-full text-sm text-gray-300">Email</label>
                 <input
                     type="email"
-                    placeholder="Email"
-                    className="w-full h-8 border border-solid border-gray-700 py-1 px-2.5 rounded text-[13px] bg-gray-700 text-white"
+                    placeholder="Enter your email"
+                    className="w-full border border-solid border-gray-700 text-[13px] rounded p-2 bg-gray-800 text-white"
                     name="email"
                 />
 
                 <label className="w-full text-sm text-gray-300">Password</label>
-                <div className="flex w-full">
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        className="w-full h-8 border border-solid border-gray-700 py-1 px-2.5 rounded text-[13px] bg-gray-700 text-white"
-                        name="password"
-                    />
-                </div>
+                <input
+                    type="password"
+                    placeholder="Enter your password"
+                    className="w-full border border-solid border-gray-700 text-[13px] rounded p-2 bg-gray-800 text-white"
+                    name="password"
+                />
 
                 {error && <div className="text-red-500">{error}</div>}
-                <button className="w-full border border-solid border-gray-700 py-1.5 mt-2.5 rounded
-        transition duration-150 ease hover:bg-gray-700 text-white">
-                    Sign up
+                <button className="w-full bg-gray-700 py-1.5 mt-2.5 rounded
+        transition duration-150 ease hover:bg-gray-600 text-white">
+                    Register
                 </button>
 
                 <Link href="/login"

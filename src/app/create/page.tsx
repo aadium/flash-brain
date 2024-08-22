@@ -140,10 +140,10 @@ export default function CreateFlashSetPage() {
                             placeholder="Flashcard Set Name"
                             value={flashSetName}
                             onChange={(e) => setFlashSetName(e.target.value)}
-                            className="bg-gray-800 p-2 rounded"
+                            className="w-full border-2 border-solid border-gray-700 text-[15px] rounded p-2 bg-gray-800 text-white"
                             required
                         />
-                        <div className="flex flex-row gap-4 justify-center">
+                        <div className="flex flex-row gap-4 justify-center w-full">
                             <input
                                 type="file"
                                 id="csvFile"
@@ -160,7 +160,7 @@ export default function CreateFlashSetPage() {
                                 }}
                                 className="hidden"
                             />
-                            <label htmlFor="csvFile" className="bg-green-600 p-2 rounded cursor-pointer">Upload CSV</label>
+                            <label htmlFor="csvFile" className="bg-green-600 hover:bg-green-700 transition duration-150 text-center p-2 rounded cursor-pointer w-full">Upload CSV</label>
 
                             <input
                                 type="file"
@@ -178,11 +178,13 @@ export default function CreateFlashSetPage() {
                                 }}
                                 className="hidden"
                             />
-                            <label htmlFor="pdfFile" className="bg-blue-600 p-2 rounded cursor-pointer">Upload PDF</label>
+                            <label htmlFor="pdfFile" className="bg-blue-600 hover:bg-blue-700 transition duration-150 text-center p-2 rounded cursor-pointer w-full">Upload PDF</label>
 
-                            <button type="button" onClick={() => setShowDialog(true)}
-                                    className="bg-gradient-to-r from-purple-600 to-indigo-700 hover:bg-gradient-to-r hover:from-purple-700 hover:to-indigo-800 p-2 rounded">
-                                {generateLoading ? "Generating..." : "Generate from content"}
+                            <button
+                                type="button"
+                                onClick={() => setShowDialog(true)}
+                                className="bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 p-2 rounded w-full transition duration-150">
+                                {generateLoading ? "Generating..." : "Generate"}
                             </button>
                         </div>
                         {flashCards.map((flashCard, index) => (
@@ -197,7 +199,7 @@ export default function CreateFlashSetPage() {
                                         placeholder="Question"
                                         value={flashCard.question}
                                         onChange={(e) => handleFlashCardChange(index, "question", e.target.value)}
-                                        className="bg-gray-700 p-2 rounded w-full"
+                                        className="w-full text-[13px] rounded p-2 bg-gray-700 text-white"
                                         required
                                     />
                                 </div>
@@ -206,32 +208,34 @@ export default function CreateFlashSetPage() {
                                     placeholder="Answer"
                                     value={flashCard.answer}
                                     onChange={(e) => handleFlashCardChange(index, "answer", e.target.value)}
-                                    className="bg-gray-700 p-2 rounded"
+                                    className="w-full text-[13px] rounded p-2 bg-gray-700 text-white"
                                     required
                                 />
                             </div>
                         ))}
-                        <button type="button" onClick={addFlashCard}
-                                className="bg-blue-500 hover:bg-blue-700 w-min p-2 rounded flex items-center justify-center">
-                            <FaPlus />
-                        </button>
-                        <button type="submit" className="bg-green-500 hover:bg-green-700 p-2 rounded">Create Set
-                        </button>
+                        <div className='flex flex-row w-full'>
+                            <button type="submit" className="bg-gray-700 hover:bg-gray-600 p-2 rounded w-full transition duration-150">Create Set
+                            </button>
+                            <button type="button" onClick={addFlashCard}
+                                    className="bg-blue-500 hover:bg-blue-700 w-10 h-10 ml-4 p-2 rounded flex items-center justify-center transition duration-150">
+                                <FaPlus />
+                            </button>
+                        </div>
                     </form>
                 </div>
             </main>
             {showDialog && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-3/4 max-w-2xl">
+                    <div className="bg-gray-900 border-2 border-gray-700 p-6 rounded-lg shadow-lg w-3/4 max-w-2xl">
                         <h2 className="text-2xl mb-4">Flashcard-generation content</h2>
                         <textarea
-                            className="w-full h-64 p-2 bg-gray-700 rounded text-white"
+                            className="w-full h-64 border-2 border-solid border-gray-600 text-[15px] rounded p-2 bg-gray-800 text-white"
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                         />
                         <div className="flex justify-end mt-4">
-                            <button onClick={() => setShowDialog(false)} className="bg-red-500 hover:bg-red-700 p-2 rounded mr-2">Cancel</button>
-                            <button onClick={generateUsingAI} className="bg-gradient-to-r from-purple-600 to-indigo-700 hover:bg-gradient-to-r hover:from-purple-700 hover:to-indigo-800 p-2 rounded">
+                            <button onClick={() => setShowDialog(false)} className="bg-red-500 hover:bg-red-600 transition duration-150 px-4 py-2 rounded mr-2">Cancel</button>
+                            <button onClick={generateUsingAI} className="bg-gradient-to-r from-purple-600 to-indigo-700 hover:bg-gradient-to-r hover:from-purple-700 hover:to-indigo-800 rounded transition duration-150 px-4 py-2">
                                 {generateLoading ? "Generating..." : "Generate Flashcards"}
                             </button>
                         </div>

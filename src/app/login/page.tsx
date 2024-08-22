@@ -39,21 +39,19 @@ export default function Login() {
                 <label className="w-full text-sm text-gray-300">Email</label>
                 <input
                     type="email"
-                    placeholder="Email"
-                    className="w-full h-8 border border-solid border-gray-700 rounded text-[13px] p-2 bg-gray-700 text-white"
+                    placeholder="Enter your email"
+                    className="w-full border border-solid border-gray-700 text-[13px] rounded p-2 bg-gray-800 text-white"
                     name="email"/>
                 <label className="w-full text-sm text-gray-300">Password</label>
-                <div className="flex w-full">
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        className="w-full h-8 border border-solid border-gray-700 rounded text-[13px] p-2 bg-gray-700 text-white"
-                        name="password"/>
-                </div>
+                <input
+                    type="password"
+                    placeholder="Enter your password"
+                    className="w-full border border-solid border-gray-700 rounded text-[13px] p-2 bg-gray-800 text-white"
+                    name="password"/>
                 {error && <div className="text-red-500">{error}</div>}
-                <button className="w-full border border-solid border-gray-700 py-1.5 mt-2.5 rounded
-        transition duration-150 ease hover:bg-gray-700 text-white">
-                    Sign In
+                <button className="w-full bg-gray-700 py-1.5 mt-2.5 rounded
+        transition duration-150 ease hover:bg-gray-600 text-white">
+                    Login
                 </button>
 
                 <Link

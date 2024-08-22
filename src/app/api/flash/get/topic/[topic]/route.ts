@@ -6,11 +6,6 @@ export async function GET(req: NextRequest) {
     try {
         await connectDB();
 
-        const token = req.headers.get('Authorization')?.split(' ')[1];
-        if (!token) {
-            return NextResponse.json({ error: 'Authorization token is required' }, { status: 401 });
-        }
-
         const topic = decodeURIComponent(req.nextUrl.pathname.split('/').pop() || '');
         if (!topic) {
             return NextResponse.json({ error: 'Topic is required' }, { status: 400 });

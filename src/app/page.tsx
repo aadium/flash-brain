@@ -11,11 +11,6 @@ export default function Home() {
     const [userFlashCards, setUserFlashCards] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
 
-    const logout = () => {
-        localStorage.removeItem("token");
-        router.push("/login");
-    };
-
     const fetchUserFlashCards = async (userId: String) => {
         const res = await fetch("/api/flash/get", {
             headers: {
@@ -29,7 +24,7 @@ export default function Home() {
     useEffect(() => {
         const checkAuth = async () => {
             if (!localStorage.getItem("token")) {
-                router.push("/login");
+                return
             } else {
                 const res = await fetch("/api/auth/check", {
                     headers: {
@@ -37,7 +32,7 @@ export default function Home() {
                     }
                 });
                 if (!res.ok) {
-                    router.push("/login");
+                    return
                 } else {
                     const result = await res.json();
                     setUserId(result.decoded.id);
@@ -65,12 +60,12 @@ export default function Home() {
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="p-2 rounded-l bg-gray-700 text-white flex-grow"
+                        className="w-full border-2 border-solid border-gray-700 border-r-gray-800 text-[15px] rounded-l p-2 bg-gray-800 text-white"
                         placeholder="Search flashcard sets..."
                     />
                     <button
                         onClick={handleSearch}
-                        className="bg-blue-600 hover:bg-blue-700 p-2 rounded-r flex-shrink-0"
+                        className="bg-gray-800 border-2 border-gray-700 hover:bg-gray-700 p-2 rounded-r flex-shrink-0 transition duration-150"
                     >
                         <FaSearch />
                     </button>
@@ -79,12 +74,14 @@ export default function Home() {
             <section className="flex-grow p-4">
                 <div className="flex flex-row mb-4">
                     <h2 className="text-2xl mr-3">Your Flash Sets</h2>
-                    <Link href="/create">
-                        <button className="bg-gray-800 p-2 rounded mb-4"><FaPlus/></button>
+                    <Link href={
+                        userId ? "/create" : "/login"
+                    }>
+                        <button className="bg-gray-800 hover:bg-gray-700 border border-gray-700 transition duration-150 p-2 rounded mb-4"><FaPlus/></button>
                     </Link>
                 </div>
                 {
-                    userId && (
+                    userId ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             {
                                 userFlashCards.map((flashCard: any) => (
@@ -95,7 +92,7 @@ export default function Home() {
                                         <h5 className="text-sm text-gray-400">{flashCard.set.length} Flashcard(s)</h5>
                                         <button
                                             type="button"
-                                            className="absolute top-2 right-2 bg-red-500 hover:bg-red-700 p-2 rounded-full opacity-100"
+                                            className="absolute top-2 right-2 bg-red-500 hover:bg-red-700 transition duration-150 p-2 rounded-full opacity-100"
                                             onClick={async (e) => {
                                                 e.stopPropagation();
                                                 const confirmDelete = confirm("Are you sure you want to delete this flash set?");
@@ -120,6 +117,11 @@ export default function Home() {
                                     </div>
                                 ))
                             }
+                        </div>
+                    ) : (
+                        <div className="text-center text-gray-400">
+                            <p>You are not logged in. Please <a href='/login'>login</a> or <a
+                                href='/register'>Register</a> to view your flashcards.</p>
                         </div>
                     )
                 }

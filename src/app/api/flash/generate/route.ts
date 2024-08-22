@@ -15,7 +15,10 @@ export async function POST(req: NextRequest) {
                 "messages": [
                     {
                         "role": "user", "content": "Generate a flash card set in the" +
-                            " following JSON format: [{\"question\": \"What is the capital of France?\"," +
+                            " following JSON format (Return the answer only in JSON format):" +
+                            " [{\"question\": \"What is the" +
+                            " capital of" +
+                            " France?\"," +
                             " \"answer\": \"Paris\"}]. Use the following content for reference: " + content
                     },
                 ],
@@ -31,10 +34,10 @@ export async function POST(req: NextRequest) {
         const message = data.choices[0].message.content;
 
         // Add error handling for JSON extraction
-        const jsonMatch = message.match(/\[([\s\S]*?)\]/);
+        const jsonMatch = message.match(/\[([\s\S]*?)]/);
         if (!jsonMatch) {
             console.error('Error extracting JSON from message:', message);
-            return NextResponse.json({ error: 'Error extracting JSON from message' }, { status: 500 });
+            POST(req);
         }
 
         const jsonString = jsonMatch[0].trim();

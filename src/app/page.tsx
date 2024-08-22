@@ -120,8 +120,8 @@ export default function Home() {
                         </div>
                     ) : (
                         <div className="text-center text-gray-400">
-                            <p>You are not logged in. Please <a href='/login'>login</a> or <a
-                                href='/register'>Register</a> to view your flashcards.</p>
+                            <p>You are not logged in. Please <Link href='/login' className='underline'>login</Link> or <Link
+                                href='/register' className='underline'>register</Link> to view your flashcards.</p>
                         </div>
                     )
                 }

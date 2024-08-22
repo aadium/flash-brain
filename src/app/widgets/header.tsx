@@ -19,6 +19,7 @@ export default function Header() {
         if (!confirm) return;
         localStorage.removeItem("token");
         setUser(null);
+        router.push("/login");
     };
 
     useEffect(() => {
@@ -64,8 +65,8 @@ export default function Header() {
                                 </button>
                                 {menuOpen && (
                                     <div className="absolute right-0 mt-2 w-48 bg-gray-800 shadow-lg z-10">
-                                        <Link href="/user/self" className="block px-4 py-2 text-white hover:bg-gray-700">Profile</Link>
-                                        <button onClick={logout} className="block w-full text-left px-4 py-2 text-white hover:bg-red-500">Logout</button>
+                                        <Link href="/user/self" className="block px-4 py-2 text-white hover:bg-gray-700 transition duration-150">Profile</Link>
+                                        <button onClick={logout} className="block w-full text-left px-4 py-2 text-white hover:bg-red-500 transition duration-150">Logout</button>
                                     </div>
                                 )}
                             </li>

@@ -3,7 +3,7 @@ import FlashSet from '@/app/api/models/FlashSet';
 
 export async function POST(req: NextRequest) {
     try {
-        const { content } = await req.json();
+        const { content, flashCardCount } = await req.json();
         const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
                 "model": "meta-llama/llama-3.1-8b-instruct:free",
                 "messages": [
                     {
-                        "role": "user", "content": "Generate a flash card set in the" +
+                        "role": "user", "content": "Generate a flash card set containing "+ flashCardCount + " cards in the" +
                             " following JSON format (Return the answer only in JSON format):" +
                             " [{\"question\": \"What is the" +
                             " capital of" +

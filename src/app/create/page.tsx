@@ -13,6 +13,7 @@ export default function CreateFlashSetPage() {
     const [userId, setUserId] = useState("");
     const [flashSetName, setFlashSetName] = useState("");
     const [flashCards, setFlashCards] = useState([{ question: "", answer: "" }]);
+    const [flashCardCount, setFlashCardCount] = useState(1);
     const [generateLoading, setGenerateLoading] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
     const [content, setContent] = useState("");
@@ -27,13 +28,21 @@ export default function CreateFlashSetPage() {
     const generateUsingAI = async () => {
         setGenerateLoading(true);
         try {
+            if (!content) {
+                alert("Content is required");
+                return;
+            }
+            if (flashCardCount < 1) {
+                alert("Card count should be greater than 0");
+                return;
+            }
             const res = await fetch(`/api/flash/generate`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 },
-                body: JSON.stringify({ content })
+                body: JSON.stringify({ content, flashCardCount })
             });
             const data = await res.json();
             setFlashCards(data);
@@ -232,6 +241,16 @@ export default function CreateFlashSetPage() {
                             className="w-full h-64 border-2 border-solid border-gray-600 text-[15px] rounded p-2 bg-gray-800 text-white"
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
+                        />
+                        <label>
+                            Enter card count
+                        </label>
+                        <input
+                            type='text'
+                            className="border ml-2 w-12 border-solid border-gray-700 text-[14px] rounded p-2 bg-gray-800 text-white mr-1"
+                            placeholder="Card count"
+                            value={flashCardCount}
+                            onChange={(e) => setFlashCardCount(Number(e.target.value))}
                         />
                         <div className="flex justify-end mt-4">
                             <button onClick={() => setShowDialog(false)} className="bg-red-500 hover:bg-red-600 transition duration-150 px-4 py-2 rounded mr-2">Cancel</button>

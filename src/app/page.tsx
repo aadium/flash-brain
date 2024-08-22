@@ -90,30 +90,28 @@ export default function Home() {
                                          onClick={() => router.push(`/${flashCard._id}`)}>
                                         <h3 className="text-xl font-semibold">{flashCard.name}</h3>
                                         <h5 className="text-sm text-gray-400">{flashCard.set.length} Flashcard(s)</h5>
-                                        <button
-                                            type="button"
-                                            className="absolute top-2 right-2 bg-red-500 hover:bg-red-700 transition duration-150 p-2 rounded-full opacity-100"
-                                            onClick={async (e) => {
-                                                e.stopPropagation();
-                                                const confirmDelete = confirm("Are you sure you want to delete this flash set?");
-                                                if (confirmDelete) {
-                                                    const res = await fetch(`/api/flash/delete/${flashCard._id}`, {
-                                                        method: "DELETE",
-                                                        headers: {
-                                                            Authorization: `Bearer ${localStorage.getItem("token")}`
-                                                        }
-                                                    })
-                                                    if (res.ok) {
-                                                        alert("Flashcard set deleted successfully");
-                                                        await fetchUserFlashCards(userId);
-                                                    }
-                                                } else {
-                                                    return;
-                                                }
-                                            }}
-                                        >
-                                            <FaTrash className="text-white"/>
-                                        </button>
+                                        <FaTrash
+                                            className='absolute top-3 right-1 text-red-400 hover:text-red-600 w-10 transition duration-150 cursor-pointer'
+                                            onClick={
+                                            async (e) => {
+                                                 e.stopPropagation();
+                                                 const confirmDelete = confirm("Are you sure you want to delete this flash set?");
+                                                 if (confirmDelete) {
+                                                     const res = await fetch(`/api/flash/delete/${flashCard._id}`, {
+                                                         method: "DELETE",
+                                                         headers: {
+                                                             Authorization: `Bearer ${localStorage.getItem("token")}`
+                                                         }
+                                                     })
+                                                     if (res.ok) {
+                                                         alert("Flashcard set deleted successfully");
+                                                         await fetchUserFlashCards(userId);
+                                                     }
+                                                 } else {
+                                                     return;
+                                                 }
+                                            }
+                                        }/>
                                     </div>
                                 ))
                             }

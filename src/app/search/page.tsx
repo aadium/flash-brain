@@ -27,15 +27,16 @@ function SearchResultsContent() {
         }
     }, [query]);
 
-    const handleSearch = () => {
-        router.push(`/search?query=${searchQuery}`);
+    const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault(); // Prevent default form submission
+        router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
     };
 
     return (
         <div className="flex flex-col bg-gray-900 text-white">
-            <section className="flex-grow p-4 mt-10">
+            <section className="flex-grow p-4 mt-12">
                 <div className="flex flex-row items-center justify-between p-4">
-                    <div className="flex w-full">
+                    <form className="flex w-full" onSubmit={handleSearch}>
                         <input
                             type="text"
                             value={searchQuery}
@@ -44,12 +45,12 @@ function SearchResultsContent() {
                             placeholder="Search flashcard sets..."
                         />
                         <button
-                            onClick={handleSearch}
+                            type="submit"
                             className="bg-gray-800 border-2 border-gray-700 hover:bg-gray-700 p-2 rounded-r flex-shrink-0 transition duration-150"
                         >
                             <FaSearch/>
                         </button>
-                    </div>
+                    </form>
                 </div>
                 <h2 className="text-2xl mb-4">Search Results for <b>{query}</b></h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

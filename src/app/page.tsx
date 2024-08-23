@@ -9,7 +9,6 @@ export default function Home() {
     const router = useRouter();
     const [userId, setUserId] = useState("");
     const [userFlashCards, setUserFlashCards] = useState([]);
-    const [searchQuery, setSearchQuery] = useState("");
 
     const fetchUserFlashCards = async (userId: String) => {
         const res = await fetch("/api/flash/get", {
@@ -43,33 +42,34 @@ export default function Home() {
         checkAuth();
     }, [router]);
 
-    const handleSearch = () => {
-        router.push(`/search?query=${searchQuery}`);
+    const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault(); // Prevent default form submission
+        const searchQuery = (document.querySelector("input[name=search]") as HTMLInputElement).value;
+        router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
     };
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-900 text-white">
             <Header/>
             <header className="flex flex-col items-center justify-center flex-grow mt-10">
-                <h1 className="text-4xl mb-4">Welcome to Flash Brain</h1>
+                <h1 className="text-4xl mb-4">Welcome to <span className='text-blue-300 font-semibold'>Flash Brain</span></h1>
                 <p className="text-xl">Instantly generate flashcards of the provided topic</p>
             </header>
             <div className="flex flex-row items-center justify-between p-4">
-                <div className="flex w-full">
+                <form className="flex w-full" onSubmit={handleSearch}>
                     <input
                         type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        name="search"
                         className="w-full border-2 border-solid border-gray-700 border-r-gray-800 text-[15px] rounded-l p-2 bg-gray-800 text-white"
                         placeholder="Search flashcard sets..."
                     />
                     <button
-                        onClick={handleSearch}
+                        type="submit"
                         className="bg-gray-800 border-2 border-gray-700 hover:bg-gray-700 p-2 rounded-r flex-shrink-0 transition duration-150"
                     >
                         <FaSearch />
                     </button>
-                </div>
+                </form>
             </div>
             <section className="flex-grow p-4">
                 <div className="flex flex-row mb-4">

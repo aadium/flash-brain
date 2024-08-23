@@ -19,9 +19,11 @@ export async function GET(req: NextRequest) {
         const user = await User.find({ _id: otherUserId });
         const email = user[0].email;
         const name = user[0].name;
+        const profilePicChoice = user[0].profilePicChoice;
         return NextResponse.json({
             email,
-            name
+            name,
+            profilePicChoice
         });
     } catch (error) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

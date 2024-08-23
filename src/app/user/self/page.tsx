@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/app/widgets/header";
+import {FaEdit} from "react-icons/fa";
 
 interface User {
     name: string;
@@ -114,32 +115,43 @@ export default function SelfUserPage() {
             <Header />
             <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-4">
                 <h1 className="text-4xl mb-4">User Information</h1>
-                <div className="flex flex-col w-3/5">
+                <div className="flex flex-col w-2/5">
                     <div className="flex flex-col items-center my-4">
-                        <img src={
-                            user.profilePicChoice
-                                ? '/profileImages/' + user.profilePicChoice.toString() + '.jpg'
-                                : "/profile.jpg"
-                        } alt="User" className="w-32 h-32 rounded-full border-2 border-blue-500" />
-                        <button onClick={openModal} className="bg-blue-500 hover:bg-blue-600 transition duration-150 px-4 py-2 rounded mt-4">Change Profile Picture</button>
+                        <div className="relative w-32 h-32">
+                            <img
+                                src={
+                                    user.profilePicChoice
+                                        ? '/profileImages/' + user.profilePicChoice.toString() + '.jpg'
+                                        : "/profile.jpg"
+                                }
+                                alt="User"
+                                className="w-32 h-32 rounded-full border-2 border-blue-500"
+                            />
+                            <button
+                                onClick={openModal}
+                                className="absolute bottom-0 right-0 bg-blue-500 hover:bg-blue-600 transition duration-150 p-2 rounded-full text-xl"
+                            >
+                                <FaEdit />
+                            </button>
+                        </div>
                         <div className="flex flex-col w-full mt-4">
                             <label className="text-sm text-gray-300">Name</label>
                             <input
                                 type="text"
                                 value={editedName}
                                 onChange={(e) => setEditedName(e.target.value)}
-                                className="w-full mb-2 p-2 rounded bg-gray-700 text-white"
+                                className="w-full border border-solid border-gray-700 rounded p-2 mb-2 bg-gray-800 text-white"
                             />
                             <label className="text-sm text-gray-300">Email</label>
                             <input
                                 type="email"
                                 value={editedEmail}
                                 onChange={(e) => setEditedEmail(e.target.value)}
-                                className="w-full mb-2 p-2 rounded bg-gray-700 text-white"
+                                className="w-full border border-solid border-gray-700 rounded p-2 mb-6 bg-gray-800 text-white"
                             />
                             <button
                                 onClick={handleSave}
-                                className="w-full py-2 mt-2 rounded bg-blue-600 hover:bg-blue-700"
+                                className="w-full bg-gray-700 py-2 text-lg rounded transition duration-150 ease hover:bg-gray-600 text-white"
                             >
                                 {loading ? "Saving..." : "Save"}
                             </button>

@@ -53,16 +53,16 @@ export default function Header() {
     };
 
     return (
-        <nav className="bg-gray-800 py-2 pl-4 pr-2 fixed w-full border-b-2 border-blue-500">
+        <nav className="bg-gray-800 fixed w-full border-b-2 border-blue-500">
             <ul className="flex justify-between flex-row items-center">
-                <li><Link href="/"><h2 className="text-2xl font-semibold text-blue-300">Flash Brain</h2></Link></li>
+                <li><Link href="/"><h2 className="text-2xl font-semibold text-blue-300 ml-4">Flash Brain</h2></Link></li>
                 <div className="flex flex-row items-center space-x-4">
                     {user ? (
                         <>
                             <li><Link href="/create"><span className="text-white">Create</span></Link></li>
                             <li className="relative">
                                 <button onClick={toggleMenu}
-                                        className="text-white px-4 py-2 rounded-md bg-gray-900 flex flex-row items-center">
+                                        className="text-white px-4 py-2 border-l-2 border-gray-600 bg-gray-900 flex flex-row items-center">
                                     <img
                                         src={
                                             user.profilePicChoice
@@ -75,7 +75,7 @@ export default function Header() {
                                     {user.name}
                                 </button>
                                 {menuOpen && (
-                                    <div className="absolute right-0 mt-2 w-48 bg-gray-800 shadow-lg z-10">
+                                    <div className="absolute right-0 w-44 bg-gray-800 shadow-lg z-10 border border-gray-600">
                                         <Link href="/user/self"
                                               className="block px-4 py-2 text-white hover:bg-gray-700 transition duration-150">Profile</Link>
                                         <button onClick={logout}
@@ -87,12 +87,12 @@ export default function Header() {
                     ) : (
                         <li>
                             <Link href="/login">
-                                <button className="text-white px-4 py-2 rounded-md bg-gray-700">
+                                <button className="text-white px-4 py-2 my-2 rounded-md bg-gray-700">
                                     Login
                                 </button>
                             </Link>
                             <Link href="/register">
-                                <button className="text-white px-4 py-2 ml-2 rounded-md bg-gray-900">
+                                <button className="text-white px-4 py-2 m-2 rounded-md bg-gray-900">
                                     Register
                                 </button>
                             </Link>

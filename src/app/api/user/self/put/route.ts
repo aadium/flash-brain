@@ -21,7 +21,7 @@ export async function PUT(req: NextRequest) {
             return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
         }
 
-        const { name, email } = await req.json();
+        const { name, email, profilePicChoice } = await req.json();
 
         // Email validation regex
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -31,7 +31,7 @@ export async function PUT(req: NextRequest) {
 
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            { name, email },
+            { name, email, profilePicChoice },
             { new: true }
         );
 

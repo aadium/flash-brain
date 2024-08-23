@@ -12,7 +12,7 @@ function isValidEmail(email: string): boolean {
 export async function POST(req: NextRequest) {
     try {
         await connectDB();
-        const { name, email, password } = await req.json();
+        const { name, email, password, profilePicUrl } = await req.json();
 
         // Check if the email format is valid
         if (!isValidEmail(email)) {
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create a new user
-        const newUser = new User({ name, email, password: hashedPassword });
+        const newUser = new User({ name, email, profilePicUrl, password: hashedPassword });
         await newUser.save();
 
         const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET!, { expiresIn: '3h' });

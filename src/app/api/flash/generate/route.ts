@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
                                 " \"answer\": \"Paris\"}]. Use the following content for reference: " + content
                         },
                     ],
+                    "format": "json"
                 })
             });
 

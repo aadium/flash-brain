@@ -6,6 +6,7 @@ import Header from "@/app/widgets/header";
 interface User {
     name: string;
     email: string;
+    profilePicChoice: number;
 }
 
 export default function OtherUserPage() {
@@ -60,7 +61,12 @@ export default function OtherUserPage() {
             <div className="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center">
                 <div className="p-4 text-center">
                     <h1 className="text-4xl mb-4">User Information</h1>
-                    <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center">
+                        <img src={
+                            user.profilePicChoice
+                                ? '/profileImages/' + user.profilePicChoice.toString() + '.jpg'
+                                : "/profile.jpg"
+                        } alt="User" className="w-32 h-32 mb-4 rounded-full border-2 border-blue-500"/>
                         <p className="text-2xl font-semibold mb-2">{user.name}</p>
                         <p className="text-lg text-gray-400">{user.email}</p>
                     </div>

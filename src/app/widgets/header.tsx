@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 interface User {
     name: string;
     email: string;
+    profilePicChoice: number;
 }
 
 export default function Header() {
@@ -60,13 +61,25 @@ export default function Header() {
                         <>
                             <li><Link href="/create"><span className="text-white">Create</span></Link></li>
                             <li className="relative">
-                                <button onClick={toggleMenu} className="text-white px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 transition duration-150">
+                                <button onClick={toggleMenu}
+                                        className="text-white px-4 py-2 rounded-md bg-gray-900 flex flex-row items-center">
+                                    <img
+                                        src={
+                                            user.profilePicChoice
+                                                ? '/profileImages/' + user.profilePicChoice.toString() + '.jpg'
+                                                : "/profile.jpg"
+                                        }
+                                        alt="User"
+                                        className="w-10 h-10 mr-2 rounded-full border-2 border-blue-500"
+                                    />
                                     {user.name}
                                 </button>
                                 {menuOpen && (
                                     <div className="absolute right-0 mt-2 w-48 bg-gray-800 shadow-lg z-10">
-                                        <Link href="/user/self" className="block px-4 py-2 text-white hover:bg-gray-700 transition duration-150">Profile</Link>
-                                        <button onClick={logout} className="block w-full text-left px-4 py-2 text-white hover:bg-red-500 transition duration-150">Logout</button>
+                                        <Link href="/user/self"
+                                              className="block px-4 py-2 text-white hover:bg-gray-700 transition duration-150">Profile</Link>
+                                        <button onClick={logout}
+                                                className="block w-full text-left px-4 py-2 text-white hover:bg-red-500 transition duration-150">Logout</button>
                                     </div>
                                 )}
                             </li>
@@ -74,12 +87,12 @@ export default function Header() {
                     ) : (
                         <li>
                             <Link href="/login">
-                                <button className="text-white px-4 py-2 rounded-md bg-green-600">
+                                <button className="text-white px-4 py-2 rounded-md bg-gray-700">
                                     Login
                                 </button>
                             </Link>
                             <Link href="/register">
-                                <button className="text-white px-4 py-2 ml-2 rounded-md bg-blue-600">
+                                <button className="text-white px-4 py-2 ml-2 rounded-md bg-gray-900">
                                     Register
                                 </button>
                             </Link>

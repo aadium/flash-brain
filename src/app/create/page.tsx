@@ -36,7 +36,7 @@ export default function CreateFlashSetPage() {
                 alert("Card count should be greater than 0");
                 return;
             }
-            const res = await fetch(`/api/flash/generate`, {
+            const res = await fetch(`/api/flash/generateJson`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export default function CreateFlashSetPage() {
                 body: JSON.stringify({ content, flashCardCount })
             });
             const data = await res.json();
-            setFlashCards(data);
+            setFlashCards(data.flashcards);
         } catch (error) {
             alert("Error generating flashcards");
             console.error(error);

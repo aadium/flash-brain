@@ -139,7 +139,6 @@ export default function CreateFlashSetPage() {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-900 text-white">
-            <Header />
             <main className="flex-grow p-4 flex justify-center items-center mt-20">
                 <div className="w-full max-w-lg">
                     <h2 className="text-4xl my-4 text-center">Create Flashcard Set</h2>

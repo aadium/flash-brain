@@ -57,7 +57,6 @@ export default function OtherUserPage() {
 
     return (
         <div className='text-white'>
-            <Header />
             <div className="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center">
                 <div className="p-4 text-center">
                     <h1 className="text-4xl mb-4">User Information</h1>

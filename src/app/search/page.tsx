@@ -73,7 +73,6 @@ function SearchResultsContent() {
 export default function SearchResults() {
     return (
         <div className="min-h-screen flex flex-col bg-gray-900 text-white">
-            <Header />
             <Suspense fallback={<div>Loading...</div>}>
                 <SearchResultsContent />
             </Suspense>

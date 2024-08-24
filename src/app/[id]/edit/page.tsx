@@ -96,7 +96,6 @@ export default function FlashSetPage() {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-900 text-white">
-            <Header />
             <main className="flex-grow p-4">
                 <button onClick={() => router.back()} className="mb-4 bg-gray-800 p-2 rounded">Back</button>
                 <h2 className="text-4xl my-4 text-center">{flashSetName}</h2>

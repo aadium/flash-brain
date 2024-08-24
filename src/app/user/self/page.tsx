@@ -112,7 +112,6 @@ export default function SelfUserPage() {
 
     return (
         <div className="bg-gray-900 text-white">
-            <Header />
             <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-4">
                 <h1 className="text-4xl mb-4">User Information</h1>
                 <div className="flex flex-col w-2/5">

@@ -67,7 +67,6 @@ export default function FlashSetPage() {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-900 text-white">
-            <Header />
             <main className="flex-grow p-4 mt-24">
                 <div className="flex flex-col mb-4 w-full justify-center items-center">
                     <div className="flex flex-row mb-4 w-full justify-center items-center">

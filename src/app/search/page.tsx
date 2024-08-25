@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Header from "@/app/widgets/header";
 import { FaSearch } from "react-icons/fa";
+import {Analytics} from "@vercel/analytics/next";
 
 function SearchResultsContent() {
     const router = useRouter();
@@ -34,6 +35,7 @@ function SearchResultsContent() {
 
     return (
         <div className="flex flex-col bg-gray-900 text-white">
+            <Analytics />
             <section className="flex-grow p-4 mt-12">
                 <div className="flex flex-row items-center justify-between p-4">
                     <form className="flex w-full" onSubmit={handleSearch}>

@@ -2,6 +2,7 @@
 import { FormEvent, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {Analytics} from "@vercel/analytics/next";
 
 export default function Register() {
     const [error, setError] = useState<string>();
@@ -34,6 +35,7 @@ export default function Register() {
 
     return (
         <section className="w-full h-screen flex items-center justify-center bg-gray-900">
+            <Analytics />
             <form
                 className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2
         border border-solid border-gray-700 bg-gray-800 rounded"

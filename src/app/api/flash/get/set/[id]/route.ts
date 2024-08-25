@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/app/api/utils/mongodb';
 import FlashSet from '@/app/api/models/FlashSet';
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt, { JwtPayload, TokenExpiredError } from "jsonwebtoken";
 
 export async function GET(req: NextRequest) {
     try {
@@ -20,21 +20,27 @@ export async function GET(req: NextRequest) {
         }
 
         if (!token) {
-            const { name, set } = flashSet;
-            return NextResponse.json({ name, set });
+            const minimalFlashSet = {
+                name: flashSet.name,
+                set: flashSet.set
+            };
+            return NextResponse.json({ flashSet: minimalFlashSet });
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
-        if (!decoded) {
-            return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+            const userId = decoded.id;
+            if (!userId) {
+                return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
+            }
+            return NextResponse.json({ flashSet });
+        } catch (error) {
+            const minimalFlashSet = {
+                name: flashSet.name,
+                set: flashSet.set
+            };
+            return NextResponse.json({ flashSet: minimalFlashSet });
         }
-
-        const userId = decoded.id;
-        if (!userId) {
-            return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
-        }
-
-        return NextResponse.json({ flashSet });
     } catch (error) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }

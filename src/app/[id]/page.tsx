@@ -13,13 +13,15 @@ interface Author {
 export default function FlashSetPage() {
     const router = useRouter();
     const {id} = useParams();
+    const [token, setToken] = useState("");
     const [userId, setUserId] = useState("");
     const [author, setAuthor] = useState<Author>({name: "", email: ""});
-    const [flashCardUserId, setFlashCardUserId] = useState("");
+    const [flashCardUserId, setFlashSetUserId] = useState("");
     const [flashCards, setFlashCards] = useState([]);
     const [flashSetName, setFlashSetName] = useState("");
 
     useEffect(() => {
+        setToken(localStorage.getItem("token") || "");
         const getAuthor = async (userId: any) => {
             const res = await fetch(`/api/user/${userId}`, {
                 headers: {
@@ -32,21 +34,22 @@ export default function FlashSetPage() {
                 setAuthor(data);
             }
         }
-        const fetchFlashCards = async (userId: String) => {
+        const fetchFlashCards = async () => {
             const res = await fetch(`/api/flash/get/set/${id}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
             });
             const data = await res.json();
+            console.log(data);
             setFlashCards(data.flashSet.set);
-            setFlashCardUserId(data.flashSet.userId);
-            await getAuthor(data.flashSet.userId);
             setFlashSetName(data.flashSet.name);
+            setFlashSetUserId(data.flashSet.userId);
+            await getAuthor(data.flashSet.userId);
         };
         const checkAuth = async () => {
             if (!localStorage.getItem("token")) {
-                router.push("/login");
+                return;
             } else {
                 const res = await fetch("/api/auth/check", {
                     headers: {
@@ -55,13 +58,14 @@ export default function FlashSetPage() {
                 });
                 const result = await res.json();
                 if (result.valid === false) {
-                    router.push("/login");
+                    return;
+                } else {
+                    setUserId(result.decoded.id);
                 }
-                setUserId(result.decoded.id);
-                await fetchFlashCards(result.decoded.id);
             }
         };
         checkAuth();
+        fetchFlashCards();
     }, [id, router]);
 
 
@@ -74,12 +78,16 @@ export default function FlashSetPage() {
                     </div>
                     <h3 className="text-xl text-gray-400 flex flex-col">
                         {
-                            (userId !== flashCardUserId) ? (
-                                <button onClick={() => router.push(`/user/${flashCardUserId}`)} className="hover:underline">
-                                    {author.name}
-                                </button>
+                            userId ? (
+                                (userId !== flashCardUserId) ? (
+                                    <button onClick={() => router.push(`/user/${flashCardUserId}`)} className="hover:underline">
+                                        {author.name}
+                                    </button>
+                                ) : (
+                                    author.name
+                                )
                             ) : (
-                                author.name
+                                ''
                             )
                         }
                     </h3>

@@ -57,9 +57,7 @@ function SearchResultsContent() {
                     {flashSets.map((flashSet: any) => (
                         <div key={flashSet._id}
                              className="bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer"
-                             onClick={() => router.push(
-                                 token ? `/${flashSet._id}` : "/login"
-                             )}>
+                             onClick={() => router.push(`/${flashSet._id}`)}>
                             <h3 className="text-xl font-semibold">{flashSet.name}</h3>
                             <h5 className="text-sm text-gray-400">{flashSet.set.length} Flashcard(s)</h5>
                         </div>

@@ -5,7 +5,7 @@ import Header from "@/app/widgets/header";
 
 export default function ConditionalHeader() {
     const pathname = usePathname();
-    const showHeader = !['/login', '/register'].includes(pathname);
+    const showHeader = !['/login', '/register', '/'].includes(pathname);
 
     return (
         <>

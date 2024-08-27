@@ -6,6 +6,15 @@
     backface-visibility: hidden;
 }
 
+html {
+    scroll-behavior: smooth;
+    background-color: rgb(3, 7, 18);
+}
+
 .rotate-y-180 {
     transform: rotateY(180deg);
+}
+
+.blurbg {
+    backdrop-filter: blur(20px);
 }

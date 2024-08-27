@@ -55,7 +55,7 @@ export default function Header() {
     return (
         <nav className="bg-gray-800 fixed w-full border-b-2 border-blue-500">
             <ul className="flex justify-between flex-row items-center">
-                <li><Link href="/"><h2 className="text-2xl font-semibold text-blue-300 ml-4">Flash Brain</h2></Link></li>
+                <li><Link href='/dashboard'><h2 className="text-2xl font-semibold text-blue-300 ml-4">Flash Brain</h2></Link></li>
                 <div className="flex flex-row items-center space-x-4">
                     {user ? (
                         <>

@@ -1,130 +1,71 @@
 "use client";
-import {useRouter} from "next/navigation";
-import {useEffect, useState} from "react";
-import Header from "@/app/widgets/header";
+
+import { FaPlus } from "react-icons/fa";
+import { BsStars } from "react-icons/bs";
+import { Analytics } from "@vercel/analytics/next";
+import LandHeader from "@/app/widgets/landHeader";
 import Link from "next/link";
-import {FaPlus, FaTrash, FaSearch} from "react-icons/fa";
-import {Analytics} from "@vercel/analytics/next";
 
 export default function Home() {
-    const router = useRouter();
-    const [userId, setUserId] = useState("");
-    const [userFlashCards, setUserFlashCards] = useState([]);
-
-    const fetchUserFlashCards = async (userId: String) => {
-        const res = await fetch("/api/flash/get", {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        });
-        const data = await res.json();
-        setUserFlashCards(data.flashSets);
-    }
-
-    useEffect(() => {
-        const checkAuth = async () => {
-            if (!localStorage.getItem("token")) {
-                return
-            } else {
-                const res = await fetch("/api/auth/check", {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`
-                    }
-                });
-                if (!res.ok) {
-                    return
-                } else {
-                    const result = await res.json();
-                    setUserId(result.decoded.id);
-                    await fetchUserFlashCards(result.decoded.id);
-                }
-            }
-        };
-        checkAuth();
-    }, [router]);
-
-    const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Prevent default form submission
-        const searchQuery = (document.querySelector("input[name=search]") as HTMLInputElement).value;
-        router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
-    };
-
     return (
-        <div className="min-h-screen flex flex-col bg-gray-900 text-white">
+        <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-950 via-gray-800 to-gray-950 text-white">
             <Analytics />
-            <header className="flex flex-col items-center justify-center flex-grow mt-10">
-                <h1 className="text-4xl mb-4">Welcome to <span className='text-blue-300 font-semibold'>Flash Brain</span></h1>
-                <p className="text-xl">Instantly generate flashcards of the provided topic</p>
-            </header>
-            <div className="flex flex-row items-center justify-between p-4">
-                <form className="flex w-full" onSubmit={handleSearch}>
-                    <input
-                        type="text"
-                        name="search"
-                        className="w-full border-2 border-solid border-gray-700 border-r-gray-800 text-[15px] rounded-l p-2 bg-gray-800 text-white"
-                        placeholder="Search flashcard sets..."
-                    />
-                    <button
-                        type="submit"
-                        className="bg-gray-800 border-2 border-gray-700 hover:bg-gray-700 p-2 rounded-r flex-shrink-0 transition duration-150"
-                    >
-                        <FaSearch />
-                    </button>
-                </form>
-            </div>
-            <section className="flex-grow p-4">
-                <div className="flex flex-row mb-4">
-                    <h2 className="text-2xl mr-3">Your Flash Sets</h2>
-                    <Link href={
-                        userId ? "/create" : "/login"
-                    }>
-                        <button className="bg-gray-800 hover:bg-gray-700 border border-gray-700 transition duration-150 p-2 rounded mb-4"><FaPlus/></button>
+            <LandHeader />
+            <main className="flex-grow mt-14">
+                {/* Hero Section */}
+                <section className="flex flex-col items-center justify-center text-center py-20 bg-transparent">
+                    <h1 className="text-5xl font-bold mb-4">Welcome to Flash Brain</h1>
+                    <p className="text-xl mb-8">Instantly generate flashcards of the provided topic</p>
+                    <Link href="/register">
+                        <button className="text-white px-8 py-4 rounded-md bg-blue-600 hover:bg-blue-700 transition duration-150">
+                            Get Started
+                        </button>
                     </Link>
+                </section>
+
+                {/* Features Section */}
+                <section className="py-20 bg-transparent">
+                    <div className="container mx-auto px-4">
+                        <h2 className="text-4xl font-bold text-center mb-12">Features</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                            <div className="text-center">
+                                <FaPlus className="text-6xl mb-4 mx-auto text-blue-500" />
+                                <h3 className="text-2xl font-bold mb-2">Create Flashcards</h3>
+                                <p>Create flashcards for any topic. It is easy and intuitive to create flashcards.</p>
+                            </div>
+                            <div className="text-center">
+                                <BsStars className="text-6xl mb-4 mx-auto text-blue-500" />
+                                <h3 className="text-2xl font-bold mb-2">Generate using AI</h3>
+                                <p>Import content from a PDF document, and generate flashcards using AI</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Testimonials Section */}
+                <section className="py-20 bg-transparent">
+                    <div className="container mx-auto px-4">
+                        <h2 className="text-4xl font-bold text-center mb-12">Testimonials</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="bg-gray-700 p-8 rounded-md">
+                                <p className="mb-4">Flash Brain has revolutionized the way I study. It is so easy to create and manage flashcards!</p>
+                                <p className="font-bold">- User A</p>
+                            </div>
+                            <div className="bg-gray-700 p-8 rounded-md">
+                                <p className="mb-4">I love how I can find flashcards on any topic. It is a game-changer for my learning.</p>
+                                <p className="font-bold">- User B</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            {/* Footer */}
+            <footer className="py-4">
+                <div className="container mx-auto px-4 text-center">
+                    <p>&copy; 2024 Flash Brain. All rights reserved.</p>
                 </div>
-                {
-                    userId ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {
-                                userFlashCards.map((flashCard: any) => (
-                                    <div key={flashCard._id}
-                                         className="relative bg-gray-800 p-4 rounded-lg shadow-md cursor-pointer group"
-                                         onClick={() => router.push(`/${flashCard._id}`)}>
-                                        <h3 className="text-xl font-semibold">{flashCard.name}</h3>
-                                        <h5 className="text-sm text-gray-400">{flashCard.set.length} Flashcard(s)</h5>
-                                        <FaTrash
-                                            className='absolute top-3 right-1 text-red-400 hover:text-red-600 w-10 transition duration-150 cursor-pointer'
-                                            onClick={
-                                            async (e) => {
-                                                 e.stopPropagation();
-                                                 const confirmDelete = confirm("Are you sure you want to delete this flash set?");
-                                                 if (confirmDelete) {
-                                                     const res = await fetch(`/api/flash/delete/${flashCard._id}`, {
-                                                         method: "DELETE",
-                                                         headers: {
-                                                             Authorization: `Bearer ${localStorage.getItem("token")}`
-                                                         }
-                                                     })
-                                                     if (res.ok) {
-                                                         alert("Flashcard set deleted successfully");
-                                                         await fetchUserFlashCards(userId);
-                                                     }
-                                                 } else {
-                                                     return;
-                                                 }
-                                            }
-                                        }/>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    ) : (
-                        <div className="text-center text-gray-400">
-                            <p>You are not logged in. Please <Link href='/login' className='underline'>login</Link> or <Link
-                                href='/register' className='underline'>register</Link> to view your flashcards.</p>
-                        </div>
-                    )
-                }
-            </section>
+            </footer>
         </div>
     );
 }

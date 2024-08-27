@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: "Flash Brain",
-    description: "Instantly generate flashcards of the provided topic",
+    description: "Flash Your Way to a Sharper Brain",
 };
 
 export default function RootLayout({

@@ -14,8 +14,8 @@ export default function Home() {
             <main className="flex-grow mt-14">
                 {/* Hero Section */}
                 <section className="flex flex-col items-center justify-center text-center py-20 bg-transparent">
-                    <h1 className="text-5xl font-bold mb-4">Welcome to Flash Brain</h1>
-                    <p className="text-xl mb-8">Instantly generate flashcards of the provided topic</p>
+                    <h1 className="text-5xl font-semibold mb-4">Welcome to <span className='text-blue-400 font-bold'>Flash Brain</span></h1>
+                    <p className="text-xl mb-8">Flash Your Way to a Sharper Brain</p>
                     <Link href="/register">
                         <button className="text-white px-8 py-4 rounded-md bg-blue-600 hover:bg-blue-700 transition duration-150">
                             Get Started
@@ -46,14 +46,18 @@ export default function Home() {
                 <section className="py-20 bg-transparent">
                     <div className="container mx-auto px-4">
                         <h2 className="text-4xl font-bold text-center mb-12">Testimonials</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div className="bg-gray-700 p-8 rounded-md">
-                                <p className="mb-4">Flash Brain has revolutionized the way I study. It is so easy to create and manage flashcards!</p>
-                                <p className="font-bold">- User A</p>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div className="bg-gradient-to-b from-gray-800 to-gray-900 p-12 rounded-md">
+                                <p className="mb-8 text-3xl font-light">Flash Brain has revolutionized the way I study. It is so easy to create and manage flashcards!</p>
+                                <p className="font-bold">- Lian Oliver</p>
                             </div>
-                            <div className="bg-gray-700 p-8 rounded-md">
-                                <p className="mb-4">I love how I can find flashcards on any topic. It is a game-changer for my learning.</p>
-                                <p className="font-bold">- User B</p>
+                            <div className="bg-gradient-to-b from-gray-800 to-gray-900 p-12 rounded-md">
+                                <p className="mb-8 text-3xl font-light">I love the AI feature. It makes it so easy to generate flashcards from a PDF document.</p>
+                                <p className="font-bold">- Jaliyah Patel</p>
+                            </div>
+                            <div className="bg-gradient-to-b from-gray-800 to-gray-900 p-12 rounded-md">
+                                <p className="mb-8 text-3xl font-light">I love how I can find flashcards on any topic. It is a game-changer for my learning.</p>
+                                <p className="font-bold">- Aaliyah Blevins</p>
                             </div>
                         </div>
                     </div>

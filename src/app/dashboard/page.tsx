@@ -54,7 +54,6 @@ export default function Home() {
             <Analytics />
             <header className="flex flex-col items-center justify-center flex-grow mt-10">
                 <h1 className="text-4xl mb-4">Welcome to <span className='text-blue-300 font-semibold'>Flash Brain</span></h1>
-                <p className="text-xl">Instantly generate flashcards of the provided topic</p>
             </header>
             <div className="flex flex-row items-center justify-between p-4">
                 <form className="flex w-full" onSubmit={handleSearch}>

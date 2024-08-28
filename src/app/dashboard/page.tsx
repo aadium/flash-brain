@@ -52,10 +52,7 @@ export default function Home() {
     return (
         <div className="min-h-screen flex flex-col bg-gray-900 text-white">
             <Analytics />
-            <header className="flex flex-col items-center justify-center flex-grow mt-10">
-                <h1 className="text-4xl mb-4">Welcome to <span className='text-blue-300 font-semibold'>Flash Brain</span></h1>
-            </header>
-            <div className="flex flex-row items-center justify-between p-4">
+            <div className="flex flex-row items-center justify-between p-4 mt-14">
                 <form className="flex w-full" onSubmit={handleSearch}>
                     <input
                         type="text"

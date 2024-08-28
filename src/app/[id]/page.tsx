@@ -30,7 +30,6 @@ export default function FlashSetPage() {
             });
             if (res.ok) {
                 const data = await res.json();
-                console.log(data);
                 setAuthor(data);
             }
         }
@@ -41,7 +40,6 @@ export default function FlashSetPage() {
                 }
             });
             const data = await res.json();
-            console.log(data);
             setFlashCards(data.flashSet.set);
             setFlashSetName(data.flashSet.name);
             setFlashSetUserId(data.flashSet.userId);

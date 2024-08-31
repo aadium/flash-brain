@@ -52,7 +52,7 @@ export default function Home() {
     return (
         <div className="min-h-screen flex flex-col bg-gray-900 text-white">
             <Analytics />
-            <div className="flex flex-row items-center justify-between p-4 mt-14">
+            <div className="flex flex-row items-center justify-between p-4 mt-16">
                 <form className="flex w-full" onSubmit={handleSearch}>
                     <input
                         type="text"

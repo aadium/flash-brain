@@ -59,15 +59,15 @@ export default function OtherUserPage() {
         <div className='text-white'>
             <div className="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center">
                 <div className="p-4 text-center">
-                    <h1 className="text-4xl mb-4">User Information</h1>
-                    <div className="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center">
+                    <h1 className="text-3xl sm:text-4xl mb-4">User Information</h1>
+                    <div className="bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg flex flex-col items-center">
                         <img src={
                             user.profilePicChoice
                                 ? '/profileImages/' + user.profilePicChoice.toString() + '.jpg'
                                 : "/profile.jpg"
-                        } alt="User" className="w-32 h-32 mb-4 rounded-full border-2 border-blue-500"/>
-                        <p className="text-2xl font-semibold mb-2">{user.name}</p>
-                        <p className="text-lg text-gray-400">{user.email}</p>
+                        } alt="User" className="w-24 h-24 sm:w-32 sm:h-32 mb-4 rounded-full border-2 border-blue-500"/>
+                        <p className="text-xl sm:text-2xl font-semibold mb-2">{user.name}</p>
+                        <p className="text-md sm:text-lg text-gray-400">{user.email}</p>
                     </div>
                 </div>
             </div>

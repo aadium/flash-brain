@@ -98,36 +98,35 @@ export default function FlashSetPage() {
         <div className="min-h-screen flex flex-col bg-gray-900 text-white">
             <main className="flex-grow p-4">
                 <button onClick={() => router.back()} className="mb-4 bg-gray-800 p-2 rounded">Back</button>
-                <h2 className="text-4xl my-4 text-center">{flashSetName}</h2>
+                <h2 className="text-3xl md:text-4xl my-4 text-center">{flashSetName}</h2>
                 <div className="flex justify-center items-center">
-                    <form className="flex flex-col gap-4 w-4/5">
+                    <form className="flex flex-col gap-4 w-full md:w-4/5">
                         {flashCards.map((flashCard, index) => (
-                            <div key={index}
-                                 className="bg-gray-800 p-2 rounded-lg shadow-md flex justify-between items-center">
-                            <textarea
-                                placeholder="Question"
-                                value={flashCard.question}
-                                onChange={(e) => handleFlashCardChange(index, "question", e.target.value)}
-                                className="w-full border border-solid border-gray-700 text-[14px] rounded p-2 bg-gray-800 text-white mr-1"
-                                required
-                            />
+                            <div key={index} className="bg-gray-800 p-2 rounded-lg shadow-md flex flex-col md:flex-row justify-between">
+                                <textarea
+                                    placeholder="Question"
+                                    value={flashCard.question}
+                                    onChange={(e) => handleFlashCardChange(index, "question", e.target.value)}
+                                    className="w-full md:w-1/2 border border-solid border-gray-700 text-[14px] rounded p-2 bg-gray-800 text-white mb-2 sm:mb-0 sm:mr-1"
+                                    required
+                                />
                                 <textarea
                                     placeholder="Answer"
                                     value={flashCard.answer}
                                     onChange={(e) => handleFlashCardChange(index, "answer", e.target.value)}
-                                    className="w-full border border-solid border-gray-700 text-[14px] rounded p-2 bg-gray-800 text-white ml-1"
+                                    className="w-full md:w-1/2 border border-solid border-gray-700 text-[14px] rounded p-2 bg-gray-800 text-white sm:ml-1"
                                     required
                                 />
                                 <FaTrash onClick={() => removeFlashCard(index)}
                                          className='m-2 text-red-400 hover:text-red-600 w-10 transition duration-150 cursor-pointer'/>
                             </div>
                         ))}
-                        <div className="flex gap-4 justify-center items-center">
+                        <div className="flex flex-col-reverse md:flex-row gap-4 justify-center items-center">
                             <button type="button" onClick={updateFlashCards}
-                                    className="bg-green-700 w-1/4 hover:bg-green-600 p-2 rounded transition duration-150">Save
+                                    className="bg-green-700 w-full md:w-1/4 hover:bg-green-600 p-2 rounded transition duration-150">Save
                             </button>
                             <button type="button" onClick={cancelChanges}
-                                    className="bg-red-800 w-1/4 hover:bg-red-700 p-2 rounded transition duration-150">Cancel
+                                    className="bg-red-800 w-full md:w-1/4 hover:bg-red-700 p-2 rounded transition duration-150">Cancel
                             </button>
                             <button type="button" onClick={addFlashCard}
                                     className="bg-blue-500 hover:bg-blue-700 w-10 h-10 p-2 rounded flex items-center justify-center transition duration-150">

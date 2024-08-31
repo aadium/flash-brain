@@ -143,7 +143,7 @@ export default function CreateFlashSetPage() {
             <Analytics />
             <main className="flex-grow p-4 flex justify-center items-center mt-20">
                 <div className="w-full max-w-lg">
-                    <h2 className="text-4xl my-4 text-center">Create Flashcard Set</h2>
+                    <h2 className="text-3xl sm:text-4xl my-4 text-center">Create Flashcard Set</h2>
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                         <input
                             type="text"
@@ -153,7 +153,7 @@ export default function CreateFlashSetPage() {
                             className="w-full border-2 border-solid border-gray-700 text-[15px] rounded p-2 bg-gray-800 text-white"
                             required
                         />
-                        <div className="flex flex-row gap-4 justify-center w-full">
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center w-full">
                             <input
                                 type="file"
                                 id="csvFile"
@@ -199,9 +199,9 @@ export default function CreateFlashSetPage() {
                         </div>
                         {flashCards.map((flashCard, index) => (
                             <div key={index} className="bg-gray-800 p-4 rounded-lg shadow-md flex flex-col gap-2">
-                                <div className='flex flex-row'>
+                                <div className='flex flex-col sm:flex-row'>
                                     <button type="button" onClick={() => removeFlashCard(index)}
-                                            className="bg-red-500 w-min hover:bg-red-700 p-2 mr-2 rounded flex items-center justify-center">
+                                            className="bg-red-500 w-min hover:bg-red-700 p-2 mb-2 sm:mb-0 sm:mr-2 rounded flex items-center justify-center">
                                         <FaTrash />
                                     </button>
                                     <input
@@ -223,11 +223,11 @@ export default function CreateFlashSetPage() {
                                 />
                             </div>
                         ))}
-                        <div className='flex flex-row w-full'>
+                        <div className='flex flex-col sm:flex-row w-full'>
                             <button type="submit" className="bg-gray-700 hover:bg-gray-600 p-2 rounded w-full transition duration-150">Create Set
                             </button>
                             <button type="button" onClick={addFlashCard}
-                                    className="bg-blue-500 hover:bg-blue-700 w-10 h-10 ml-4 p-2 rounded flex items-center justify-center transition duration-150">
+                                    className="bg-blue-500 hover:bg-blue-700 w-10 h-10 mt-4 sm:mt-0 sm:ml-4 p-2 rounded flex items-center justify-center transition duration-150">
                                 <FaPlus />
                             </button>
                         </div>
@@ -236,7 +236,7 @@ export default function CreateFlashSetPage() {
             </main>
             {showDialog && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-gray-900 border-2 border-gray-700 p-6 rounded-lg shadow-lg w-3/4 max-w-2xl">
+                    <div className="bg-gray-900 border-2 border-gray-700 p-6 rounded-lg shadow-lg w-11/12 sm:w-3/4 max-w-2xl">
                         <h2 className="text-2xl mb-4">Flashcard-generation content</h2>
                         <textarea
                             className="w-full h-64 border-2 border-solid border-gray-600 text-[15px] rounded p-2 bg-gray-800 text-white"
@@ -248,7 +248,7 @@ export default function CreateFlashSetPage() {
                         </label>
                         <input
                             type='text'
-                            className="border ml-2 w-12 border-solid border-gray-700 text-[14px] rounded p-2 bg-gray-800 text-white mr-1"
+                            className="border md:ml-2 w-full md:w-12 border-solid border-gray-700 text-[14px] rounded p-2 bg-gray-800 text-white mr-1"
                             placeholder="Card count"
                             value={flashCardCount}
                             onChange={(e) => setFlashCardCount(Number(e.target.value))}

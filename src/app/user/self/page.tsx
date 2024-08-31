@@ -111,76 +111,76 @@ export default function SelfUserPage() {
     }
 
     return (
-        <div className="bg-gray-900 text-white">
-            <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-4">
-                <h1 className="text-4xl mb-4">User Information</h1>
-                <div className="flex flex-col w-2/5">
-                    <div className="flex flex-col items-center my-4">
-                        <div className="relative w-32 h-32">
-                            <img
-                                src={
-                                    user.profilePicChoice
-                                        ? '/profileImages/' + user.profilePicChoice.toString() + '.jpg'
-                                        : "/profile.jpg"
-                                }
-                                alt="User"
-                                className="w-32 h-32 rounded-full border-2 border-blue-500"
-                            />
-                            <button
-                                onClick={openModal}
-                                className="absolute bottom-0 right-0 bg-blue-500 hover:bg-blue-600 transition duration-150 p-2 rounded-full text-xl"
-                            >
-                                <FaEdit />
-                            </button>
-                        </div>
-                        <div className="flex flex-col w-full mt-4">
-                            <label className="text-sm text-gray-300">Name</label>
-                            <input
-                                type="text"
-                                value={editedName}
-                                onChange={(e) => setEditedName(e.target.value)}
-                                className="w-full border border-solid border-gray-700 rounded p-2 mb-2 bg-gray-800 text-white"
-                            />
-                            <label className="text-sm text-gray-300">Email</label>
-                            <input
-                                type="email"
-                                value={editedEmail}
-                                onChange={(e) => setEditedEmail(e.target.value)}
-                                className="w-full border border-solid border-gray-700 rounded p-2 mb-6 bg-gray-800 text-white"
-                            />
-                            <button
-                                onClick={handleSave}
-                                className="w-full bg-gray-700 py-2 text-lg rounded transition duration-150 ease hover:bg-gray-600 text-white"
-                            >
-                                {loading ? "Saving..." : "Save"}
-                            </button>
-                        </div>
+    <div className="bg-gray-900 text-white">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-4">
+            <h1 className="text-3xl sm:text-4xl mb-4">User Information</h1>
+            <div className="flex flex-col w-full sm:w-2/5">
+                <div className="flex flex-col items-center my-4">
+                    <div className="relative w-24 h-24 sm:w-32 sm:h-32">
+                        <img
+                            src={
+                                user.profilePicChoice
+                                    ? '/profileImages/' + user.profilePicChoice.toString() + '.jpg'
+                                    : "/profile.jpg"
+                            }
+                            alt="User"
+                            className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-blue-500"
+                        />
+                        <button
+                            onClick={openModal}
+                            className="absolute bottom-0 right-0 bg-blue-500 hover:bg-blue-600 transition duration-150 p-2 rounded-full text-lg sm:text-xl"
+                        >
+                            <FaEdit />
+                        </button>
+                    </div>
+                    <div className="flex flex-col w-full mt-4">
+                        <label className="text-sm text-gray-300">Name</label>
+                        <input
+                            type="text"
+                            value={editedName}
+                            onChange={(e) => setEditedName(e.target.value)}
+                            className="w-full border border-solid border-gray-700 rounded p-2 mb-2 bg-gray-800 text-white"
+                        />
+                        <label className="text-sm text-gray-300">Email</label>
+                        <input
+                            type="email"
+                            value={editedEmail}
+                            onChange={(e) => setEditedEmail(e.target.value)}
+                            className="w-full border border-solid border-gray-700 rounded p-2 mb-6 bg-gray-800 text-white"
+                        />
+                        <button
+                            onClick={handleSave}
+                            className="w-full bg-gray-700 py-2 text-lg rounded transition duration-150 ease hover:bg-gray-600 text-white"
+                        >
+                            {loading ? "Saving..." : "Save"}
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-gray-900 border-2 border-gray-700 p-6 rounded-lg shadow-lg w-3/4 max-w-2xl">
-                        <h2 className="text-2xl mb-4">Choose Profile Picture</h2>
-                        <div className="grid grid-cols-3 gap-4">
-                            {availablePics.map((pic) => (
-                                <img
-                                    key={pic}
-                                    src={`/profileImages/${pic}`}
-                                    alt={`Profile ${pic}`}
-                                    className={`w-32 h-32 rounded-full border-4 ${selectedPic === parseInt(pic.split('.')[0]) ? 'border-blue-500' : 'border-gray-500'} cursor-pointer`}
-                                    onClick={() => handlePicSelect(parseInt(pic.split('.')[0]))}
-                                />
-                            ))}
-                        </div>
-                        <div className="flex justify-end mt-4">
-                            <button onClick={closeModal} className="bg-red-500 hover:bg-red-600 transition duration-150 px-4 py-2 rounded mr-2">Close</button>
-                            <button onClick={handleSetPic} className="bg-green-500 hover:bg-green-600 transition duration-150 px-4 py-2 rounded">Set</button>
-                        </div>
+        {showModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="bg-gray-900 border-2 border-gray-700 p-6 rounded-lg shadow-lg w-11/12 sm:w-3/4 max-w-2xl">
+                    <h2 className="text-xl sm:text-2xl mb-4">Choose Profile Picture</h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        {availablePics.map((pic) => (
+                            <img
+                                key={pic}
+                                src={`/profileImages/${pic}`}
+                                alt={`Profile ${pic}`}
+                                className={`w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 ${selectedPic === parseInt(pic.split('.')[0]) ? 'border-blue-500' : 'border-gray-500'} cursor-pointer`}
+                                onClick={() => handlePicSelect(parseInt(pic.split('.')[0]))}
+                            />
+                        ))}
+                    </div>
+                    <div className="flex justify-end mt-4">
+                        <button onClick={closeModal} className="bg-red-500 hover:bg-red-600 transition duration-150 px-4 py-2 rounded mr-2">Close</button>
+                        <button onClick={handleSetPic} className="bg-green-500 hover:bg-green-600 transition duration-150 px-4 py-2 rounded">Set</button>
                     </div>
                 </div>
-            )}
-        </div>
-    );
+            </div>
+        )}
+    </div>
+);
 }

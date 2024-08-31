@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FaBars } from "react-icons/fa";
 
 interface User {
     name: string;
@@ -54,15 +55,18 @@ export default function Header() {
 
     return (
         <nav className="bg-gray-800 fixed w-full border-b-2 border-blue-500">
-            <ul className="flex justify-between flex-row items-center">
-                <li><Link href='/dashboard'><h2 className="text-2xl font-semibold text-blue-300 ml-4">Flash Brain</h2></Link></li>
-                <div className="flex flex-row items-center space-x-4">
+            <ul className="flex justify-between items-center p-4">
+                <li><Link href='/dashboard'><h2 className="text-2xl font-semibold text-blue-300">Flash Brain</h2></Link></li>
+                <div className="flex items-center space-x-4">
+                    <button onClick={toggleMenu} className="text-white md:hidden">
+                        <FaBars className="text-2xl" />
+                    </button>
                     {user ? (
                         <>
-                            <li><Link href="/create"><span className="text-white">Create</span></Link></li>
-                            <li className="relative">
+                            <li className="hidden md:block"><Link href="/create"><span className="text-white">Create</span></Link></li>
+                            <li className="hidden md:block relative">
                                 <button onClick={toggleMenu}
-                                        className="text-white px-4 py-2 border-l-2 border-gray-600 bg-gray-900 flex flex-row items-center">
+                                        className="text-white px-4 py-2 border-l-2 border-gray-600 bg-gray-900 flex items-center">
                                     <img
                                         src={
                                             user.profilePicChoice
@@ -85,7 +89,7 @@ export default function Header() {
                             </li>
                         </>
                     ) : (
-                        <li>
+                        <li className="hidden md:block">
                             <Link href="/login">
                                 <button className="text-white px-4 py-2 my-2 rounded-md bg-gray-700">
                                     Login
@@ -100,6 +104,27 @@ export default function Header() {
                     )}
                 </div>
             </ul>
+            {menuOpen && (
+                <div className="md:hidden bg-gray-800 border-t border-gray-600">
+                    {user ? (
+                        <>
+                            <Link href="/create"
+                                  className="block px-4 py-2 text-white hover:bg-gray-700 transition duration-150">Create</Link>
+                            <Link href="/user/self"
+                                  className="block px-4 py-2 text-white hover:bg-gray-700 transition duration-150">Profile</Link>
+                            <button onClick={logout}
+                                    className="block w-full text-left px-4 py-2 text-white hover:bg-red-500 transition duration-150">Logout</button>
+                        </>
+                    ) : (
+                        <>
+                            <Link href="/login"
+                                  className="block px-4 py-2 text-white hover:bg-gray-700 transition duration-150">Login</Link>
+                            <Link href="/register"
+                                  className="block px-4 py-2 text-white hover:bg-gray-700 transition duration-150">Register</Link>
+                        </>
+                    )}
+                </div>
+            )}
         </nav>
     );
 }
